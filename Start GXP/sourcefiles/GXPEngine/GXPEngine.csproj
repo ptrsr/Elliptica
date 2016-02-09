@@ -69,6 +69,7 @@
     <Compile Include="GXPEngine\Utils\Utils.cs" />
     <Compile Include="Level\TMXParser.cs" />
     <Compile Include="Level\TMXLevel.cs" />
+    <Compile Include="Vec2.cs" />
   </ItemGroup>
   <ItemGroup />
 </Project>

@@ -85,7 +85,6 @@ namespace GXPEngine
         private void interpretLayer(Layer layer)
         {
             string csvData = layer.data.innerXml;
-            Console.WriteLine("works");
             if(csvData != null)
             {
                 Console.WriteLine("works after null");

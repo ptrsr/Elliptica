@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="left-down" width="4" height="4" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="tilesheet1" tilewidth="32" tileheight="32" tilecount="72">
+  <image source="tilesheet1.png" width="384" height="192"/>
+ </tileset>
+ <layer name="Слой с плочки 1" width="4" height="4">
+  <data encoding="csv">
+1,1,14,1,
+1,14,14,1,
+1,14,14,1,
+1,1,1,1
+</data>
+ </layer>
+</map>
