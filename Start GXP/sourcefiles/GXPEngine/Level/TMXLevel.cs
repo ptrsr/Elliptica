@@ -9,7 +9,7 @@ namespace GXPEngine
     {
         //constructor not used because level uses inheritence and only needs the methods
         private AnimSprite animSprite;
-        const int TileSize = 32;
+        const int TileSize = 64;
         public TMXLevel()
         {
         }
@@ -98,7 +98,7 @@ namespace GXPEngine
                         if (Int32.TryParse(cols[i], out tile))
                         {
                             if (tile != 0)
-                                interpretCell(i * TileSize, j * TileSize, tile);
+                                interpretCell(i * TileSize, (j - 1) * TileSize, tile - 1);
                         }
                     }
                 }
@@ -118,7 +118,7 @@ namespace GXPEngine
         private void AddSprite(int frame)
         {
             Console.WriteLine("works");
-            animSprite = new AnimSprite("tilesheet1.png", 12, 9);
+            animSprite = new AnimSprite("tilesheet1.png", 9, 5);
             animSprite.SetFrame(frame);
             AddChild(animSprite);
 
