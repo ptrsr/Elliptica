@@ -9,13 +9,11 @@ namespace GXPEngine
 
     class Player : Sprite
     {
-
-
         private Vec2 _position;
         private Vec2 _velocity;
         private Vec2 _acceleration;
         private Vec2 _gravity = new Vec2(0, 1);
-        private bool checkGround = false;
+        private bool onGround = false;
         public Player(Vec2 pPosition = null) : base("colors.png")
         {
             SetOrigin(width / 2, height / 2);
@@ -30,7 +28,7 @@ namespace GXPEngine
 
         void Update()
         {
-            ApplyBorders();
+            Console.WriteLine(onGround);
             Movements();
             Step();
             acceleration = Vec2.zero;
@@ -42,7 +40,7 @@ namespace GXPEngine
         {
             if (Input.GetKeyDown(Key.W))
             {
-                if(checkGround)
+                if(onGround)
                 acceleration.Add(new Vec2(0,-20));
             }
             if (Input.GetKey(Key.D))
@@ -53,16 +51,8 @@ namespace GXPEngine
             {
                 acceleration.Add(new Vec2(-1,0));
             }
-        }
 
-
-        private void ApplyBorders()// applying borders to game
-        {
-            checkGround = false;
-            if (position.x < 64) position.x = 64;
-            if (position.y < 64) position.y = 64;
-            if (position.x > 1024 - 64) position.x = 1024 - 64;
-            if (position.y > 768 - 64) { position.y = 768 - 64; checkGround = true; }
+            onGround = false;
         }
 
         public Vec2 position
@@ -110,6 +100,17 @@ namespace GXPEngine
 
             x = _position.x;
             y = _position.y;
+        }
+
+        void OnCollision(GameObject other)
+        {
+            if (other.y - 32 < y)
+            {
+                _position.y = other.y - 32;
+                _velocity.y = 0;
+                onGround = true;
+
+            }
         }
     }
 }

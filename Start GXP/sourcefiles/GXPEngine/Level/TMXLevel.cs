@@ -22,10 +22,8 @@ namespace GXPEngine
             Map map = tmxParser.Parse(filename);
             //read all object groups
             ObjectGroup[] objectGroups = map.objectGroup;
-            Console.WriteLine("works");
             if(objectGroups != null)
             {
-                Console.WriteLine("works after null");
                 for (int i = 0; i < objectGroups.Length; i++)
                 {
                     interpretObjectGroup(objectGroups[i]);
@@ -87,7 +85,6 @@ namespace GXPEngine
             string csvData = layer.data.innerXml;
             if(csvData != null)
             {
-                Console.WriteLine("works after null");
                 string[] lines = csvData.Split('\n');
                 for (int j = 0; j < lines.Length; j++)
                 {
@@ -117,7 +114,6 @@ namespace GXPEngine
         //adding an animation sprite with the right frame from the level
         private void AddSprite(int frame)
         {
-            Console.WriteLine("works");
             animSprite = new AnimSprite("tilesheet1.png", 9, 5);
             animSprite.SetFrame(frame);
             AddChild(animSprite);

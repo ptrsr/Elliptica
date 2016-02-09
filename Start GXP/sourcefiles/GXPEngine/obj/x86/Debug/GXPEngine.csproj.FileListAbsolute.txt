@@ -8,3 +8,8 @@ D:\Portalish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.pdb
 D:\Portalish\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
 D:\Portalish\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
 D:\Portalish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
+C:\Users\Ruud\Documents\Huiswerk\Git\Elliptica\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.exe
+C:\Users\Ruud\Documents\Huiswerk\Git\Elliptica\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+C:\Users\Ruud\Documents\Huiswerk\Git\Elliptica\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
+C:\Users\Ruud\Documents\Huiswerk\Git\Elliptica\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\Users\Ruud\Documents\Huiswerk\Git\Elliptica\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
