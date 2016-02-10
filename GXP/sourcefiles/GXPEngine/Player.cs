@@ -17,12 +17,17 @@ namespace GXPEngine
         private Vec2 _gravity = new Vec2(0, 1);
         private bool onGround = false;
         private float frame = 17;
+        private Arm arm;
+
         public Player(Vec2 pPosition = null) : base("player.png", 16 , 2)
         {
             SetOrigin(width / 2, height / 2);
             position = pPosition;
             velocity = Vec2.zero;
             acceleration = Vec2.zero;
+
+            arm = new Arm(this);
+            AddChild(arm);
 
             x = position.x;
             y = position.y;
@@ -55,7 +60,10 @@ namespace GXPEngine
             {
                 acceleration.Add(new Vec2(-1,0));
             }
-
+            if (Input.GetMouseButtonDown(0))
+            {
+                arm.Shooting();
+            }
             onGround = false;
         }
 

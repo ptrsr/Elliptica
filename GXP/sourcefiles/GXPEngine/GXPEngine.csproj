@@ -37,6 +37,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arm.cs" />
     <Compile Include="Level\Item.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\Map.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Level\TMXParser.cs" />
     <Compile Include="Level\TMXLevel.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Projectiles.cs" />
     <Compile Include="Vec2.cs" />
   </ItemGroup>
   <ItemGroup />
