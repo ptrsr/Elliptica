@@ -1,0 +1,25 @@
+C:\Users\MasteR\Google Диск\Portal-ish\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
+C:\Users\MasteR\Google Диск\Portal-ish\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\Users\MasteR\Google Диск\Portal-ish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
+C:\Users\MasteR\Google Диск\Portal-ish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.exe
+C:\Users\MasteR\Google Диск\Portal-ish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+D:\Portalish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.exe
+D:\Portalish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+D:\Portalish\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
+D:\Portalish\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
+D:\Portalish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
+C:\Users\Roedie\Desktop\Github\Portalish\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
+C:\Users\Roedie\Desktop\Github\Portalish\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\Users\Roedie\Desktop\Github\Portalish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
+C:\Users\Roedie\Desktop\Github\Portalish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.exe
+C:\Users\Roedie\Desktop\Github\Portalish\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+C:\Users\MasteR\Desktop\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.exe
+C:\Users\MasteR\Desktop\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+C:\Users\MasteR\Desktop\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
+C:\Users\MasteR\Desktop\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\Users\MasteR\Desktop\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
+C:\Users\Roedie\Desktop\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.exe
+C:\Users\Roedie\Desktop\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+C:\Users\Roedie\Desktop\Start GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
+C:\Users\Roedie\Desktop\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
+C:\Users\Roedie\Desktop\Start GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
