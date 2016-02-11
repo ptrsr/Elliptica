@@ -54,7 +54,10 @@ namespace GXPEngine
             if (Input.mouseX >= x)
                 _directionX = 1;
             if (Input.GetMouseButtonDown(0))
-                arm.Shooting();
+            {
+                arm.ShootingPortal();
+                arm.ShootingBall();
+            }
             if (Input.GetKeyDown(Key.W))
             {
                 if (onGround)
@@ -64,6 +67,8 @@ namespace GXPEngine
             }
             if (Input.GetKey(Key.D))
             {
+                acceleration.Add(new Vec2(0.8f, 0));
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 arm.ShootingPortal();
