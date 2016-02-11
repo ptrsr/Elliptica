@@ -19,8 +19,8 @@ namespace GXPEngine
         private float frame = 0.0f;
         private float firstframe = 0.0f;
         private float lastframe = 0.0f;
-        private int _directionX;
-        private Arm arm;
+        private int _directionX = 1;
+        public Arm arm;
 
         public Player(Vec2 pPosition = null) : base("player.png", 16 , 2)
         {
@@ -65,6 +65,7 @@ namespace GXPEngine
                 lastframe = 15;
                 _directionX = 1;
             }
+            if (Input.GetMouseButtonDown(0)) arm.Shooting();
             else if (Input.GetKey(Key.A))
             {
                 acceleration.Add(new Vec2(-1, 0));
@@ -72,6 +73,7 @@ namespace GXPEngine
                 lastframe = 15;
                 _directionX = -1;
             }
+
             else {
                 firstframe = 16;
                 lastframe = 22;

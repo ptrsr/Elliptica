@@ -9,6 +9,7 @@ namespace GXPEngine
     {
         private Player _player;
         private Vec2 _armVector;
+        public Projectiles projectile;
 
         public Arm(Player player) : base("checkers.png")
         {
@@ -30,11 +31,14 @@ namespace GXPEngine
 
         public void Shooting()
         {
-            Projectiles Projectile = new Projectiles();
-            game.AddChild(Projectile);
-            Projectile.x = _player.x + _armVector.x;
-            Projectile.y = _player.y + _armVector.y;
-            Projectile.rotation = this.rotation;
+            if(projectile == null)
+            {
+                projectile = new Projectiles();
+                game.AddChild(projectile);
+                projectile.x = _player.x + _armVector.x;
+                projectile.y = _player.y + _armVector.y;
+                projectile.rotation = this.rotation;
+            }
         }
 
 
