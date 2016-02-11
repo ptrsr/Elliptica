@@ -35,12 +35,12 @@ namespace GXPEngine
 
         private void CheckCollision()
         {
-            for(int i = background.Count - 1; i >= 0; i--)
+            for (int i = background.Count - 1; i >= 0; i--)
             {
                 AnimSprite anims = background[i];
                 if (anims.HitTest(player))
                 {
-                    if(tiles[i] == 2)
+                    if (tiles[i] == 2)
                     {
                         player.position.y = playerOldY;
                         player.velocity.y = 0;
@@ -51,10 +51,22 @@ namespace GXPEngine
                         player.position.x = playerOldX;
                         player.velocity.x = 0;
                     }
-                    if(tiles[i] == 10)
+                    if (tiles[i] == 10)
                     {
                         player.position.x = playerOldX;
                         player.velocity.x = 0;
+                    }
+                }
+                if (player.arm.projectile != null)
+                {
+                    if (anims.HitTest(player.arm.projectile))
+                    {
+                        if(tiles[i] == 12)
+                        {
+                            player.arm.projectile.Destroy();
+                            player.arm.projectile = null;
+                            Console.WriteLine("CREATING PORTALSSSs");
+                        }
                     }
                 }
             }

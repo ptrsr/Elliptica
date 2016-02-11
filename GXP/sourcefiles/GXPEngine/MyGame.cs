@@ -13,7 +13,7 @@ public class MyGame : Game
 
 	void Update ()
 	{
-		
+        Console.WriteLine(currentFps);
 	}
 
 	static void Main() {
