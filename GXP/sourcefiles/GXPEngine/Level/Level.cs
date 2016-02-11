@@ -10,8 +10,10 @@ namespace GXPEngine
     class Level : TMXLevel
     {
         private Player player;
+        Ball ball;
         private float playerOldX;
         private float playerOldY;
+        private List<Ball> ballz = new List<Ball>();
         public Level(string filename) : base()
         {
             InterpretLayer(filename);
@@ -23,14 +25,40 @@ namespace GXPEngine
             player.position.y = 600 - 32;
             AddChild(player);
 
+
+            ballz.Add(ball = new Ball());
+            ball.position.x = 700;
+            ball.position.y = 400;
+            AddChild(ball);
+
         }
 
         void Update()
         {
 
             CheckCollision();
+            CheckBallCollision();
             playerOldX = player.position.x;
             playerOldY = player.position.y;
+            
+        }
+        
+        private void CheckBallCollision()
+        {
+            if (ball != null)
+            {
+
+                if (!player.arm.CheckHasBall())
+                {
+                    if ((ball.position.x - player.position.x) < 3)
+                    {
+                        ball.Destroy();
+                        ball = null;
+                        player.PickUpBall();
+                        Console.WriteLine(true);
+                    }
+                }
+            }
         }
 
         private void CheckCollision()
@@ -42,18 +70,18 @@ namespace GXPEngine
                 {
                     if (tiles[i] == 2)
                     {
-                        player.position.y = anims.y - player.height / 2;
+                        player.position.y = playerOldY;
                         player.velocity.y = 0;
                         player.SetOnGound();
                     }
                     if (tiles[i] == 12)
                     {
-                        player.position.x = anims.x + player.width / 2 + 64;
+                        player.position.x = playerOldX;
                         player.velocity.x = 0;
                     }
                     if (tiles[i] == 10)
                     {
-                        player.position.x = anims.x - player.width / 2;
+                        player.position.x = playerOldX;
                         player.velocity.x = 0;
                     }
                 }
@@ -65,8 +93,21 @@ namespace GXPEngine
                         {
                             player.arm.projectile.Destroy();
                             player.arm.projectile = null;
-                            Console.WriteLine("CREATING PORTALSSSs");
                         }
+                    }
+                }
+                if (ball != null)
+                {
+                    if (ball.HitTest(anims))
+                    {
+                        if (tiles[i] == 2)
+                            if (ball.position.y + ball.radius > anims.y)
+                            {
+
+                                ball.position.y = anims.y - ball.radius;
+                                ball.velocity.y *= -0.50f;
+                            }
+
                     }
                 }
             }

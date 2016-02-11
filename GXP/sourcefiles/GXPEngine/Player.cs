@@ -31,7 +31,6 @@ namespace GXPEngine
 
             arm = new Arm(this);
             AddChild(arm);
-
             x = position.x;
             y = position.y;
         }
@@ -39,7 +38,6 @@ namespace GXPEngine
 
         void Update()
         {
-            Console.WriteLine(velocity.y);
             UpdateAnimation();
             Movements();
             Step();
@@ -50,30 +48,37 @@ namespace GXPEngine
 
         private void Movements()
         {
-            if (Input.mouseX <= x)
-                _directionX = -1;
-            if (Input.mouseX >= x)
-                _directionX = 1;
-            if (Input.GetMouseButtonDown(0))
-                arm.Shooting();
             if (Input.GetKeyDown(Key.W))
             {
                 if (onGround)
                 {
                     acceleration.Add(new Vec2(0, -20));
+                    Console.WriteLine(true);
                 }
             }
             if (Input.GetKey(Key.D))
             {
-                acceleration.Add(new Vec2(0.8f, 0));
+                acceleration.Add(new Vec2(1, 0));
+                firstframe = 0;
+                lastframe = 15;
+                _directionX = 1;
             }
- 
+            if (Input.GetMouseButtonDown(0))
+            {
+                arm.ShootingPortal();
+                arm.ShootingBall();
+            }
             else if (Input.GetKey(Key.A))
             {
-                acceleration.Add(new Vec2(-0.8f, 0));
+                acceleration.Add(new Vec2(-1, 0));
+                firstframe = 0;
+                lastframe = 15;
+                _directionX = -1;
             }
 
             else {
+                firstframe = 16;
+                lastframe = 22;
                 onGround = false;
             }
             scaleX = _directionX;
@@ -133,41 +138,17 @@ namespace GXPEngine
             onGround = true;
         }
 
+        public void PickUpBall()
+        {
+            arm.BallArm();
+        }
         void UpdateAnimation()
         {
-            if (velocity.y == 0)
-            {
-                if (Mathf.Abs(velocity.x) > 1.5f)
-                {
-                    frame = frame + velocity.x / 15 * _directionX;
-
-                    firstframe = 0;
-                    lastframe = 15;
-                }
-                else
-                {
-                    frame += 0.1f;
-
-                    firstframe = 16;
-                    lastframe = 22;
-                }
-                if (frame < firstframe)
-                {
-                    frame = lastframe;
-                }
-                if (frame > lastframe)
-                {
-                    frame = firstframe;
-                }
-            }
-            else if (velocity.y <= -1)
-                frame = 23;
-            else if (velocity.y > -1 && velocity.y < 5)
-                frame = 24;
-            else if (velocity.y > 5)
-                frame = 25;
-
-
+            frame = frame + 0.2f;
+            if (frame >= lastframe + 1);
+                frame = firstframe;
+            if (frame < firstframe)
+                frame = lastframe;
             SetFrame((int)frame);
         }
     }
