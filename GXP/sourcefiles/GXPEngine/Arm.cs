@@ -11,7 +11,7 @@ namespace GXPEngine
         private Vec2 _armVector;
         public Projectiles projectile;
 
-        public Arm(Player player) : base("checkers.png")
+        public Arm(Player player) : base("hand.png")
         {
             SetOrigin(0, height / 2);
             _player = player;
@@ -25,8 +25,17 @@ namespace GXPEngine
 
         void RotateArm ()
         {
-            float angleInRadians = Mathf.Atan2(_armVector.y, _armVector.x);
-            rotation = Vec2.Rad2Deg(angleInRadians);
+            float angleInRadians;
+            if (_player.scaleX == 1)
+            {
+                angleInRadians = Mathf.Atan2(_armVector.y, _armVector.x);
+                rotation = Vec2.Rad2Deg(angleInRadians);
+            }
+            if (_player.scaleX == -1)
+            {
+                angleInRadians = -Mathf.Atan2(_armVector.y, _armVector.x);
+                rotation = Vec2.Rad2Deg(angleInRadians) + 180;
+            }
         }
 
         public void Shooting()
@@ -37,7 +46,7 @@ namespace GXPEngine
                 game.AddChild(projectile);
                 projectile.x = _player.x + _armVector.x;
                 projectile.y = _player.y + _armVector.y;
-                projectile.rotation = this.rotation;
+                projectile.rotation = Vec2.Rad2Deg(Mathf.Atan2(_armVector.y, _armVector.x));
             }
         }
 
