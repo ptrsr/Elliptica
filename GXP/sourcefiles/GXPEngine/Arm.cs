@@ -10,7 +10,7 @@ namespace GXPEngine
         private Player _player;
         private Vec2 _armVector;
         public Projectiles projectile;
-        private Ball ball;
+        public Ball ball;
         private bool hasBall = false;
 
         public Arm(Player player) : base("arm.png",2,1)
@@ -43,7 +43,7 @@ namespace GXPEngine
 
         public void ShootingPortal()
         {
-            if(projectile == null && !hasBall)
+            if(projectile == null)
             {
                 projectile = new Projectiles();
                 game.AddChild(projectile);
@@ -54,15 +54,14 @@ namespace GXPEngine
         }
         public void ShootingBall()
         {
-            if (ball == null && hasBall)
+            if (ball == null)
             {
                 ball = new Ball();
                 game.AddChild(ball);
                 ball.position.x = _player.x;
                 ball.position.y = _player.y;
-                ball.acceleration.x = _armVector.x * 0.1f;
+                ball.velocity.SetXY(_armVector.Scale(0.8f));
                 ball.rotation = this.rotation;
-                Console.WriteLine("ballx : " + ball.position.x + "  bally : " + ball.position.y);
                 hasBall = false;
                 SetFrame(0);
             }
@@ -77,6 +76,12 @@ namespace GXPEngine
         {
             return hasBall;
         }
+
+        public Ball GetBall()
+        {
+            return ball;
+        }
+        
 
 
     }

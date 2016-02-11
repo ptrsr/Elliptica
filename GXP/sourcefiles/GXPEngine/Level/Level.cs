@@ -100,16 +100,56 @@ namespace GXPEngine
                 {
                     if (ball.HitTest(anims))
                     {
-                        if (tiles[i] == 8 || tiles[i] == 4 || tiles[i] == 6 || tiles[i] == 2)
-                            if (ball.position.y + ball.radius > anims.y)
+                        if (tiles[i] == 8)
+                        {
+                            if(ball.position.y + ball.radius > anims.y)
                             {
-
                                 ball.position.y = anims.y - ball.radius;
-                                ball.velocity.y *= -0.50f;
+                                ball.velocity.y *= -0.5f;
                             }
-
+                        }
                     }
                 }
+                if(player.arm.ball != null)
+                {
+                    if (player.arm.ball.HitTest(anims))
+                    {
+                        if (tiles[i] == 8 )
+                        {
+                            if (player.arm.ball.position.y + player.arm.ball.radius > anims.y)
+                            {
+                                player.arm.ball.position.y = anims.y - player.arm.ball.radius;
+                                player.arm.ball.velocity.y *= -1;
+                            }
+                        }
+                        if(tiles[i] == 6 )
+                        {
+                            if (player.arm.ball.position.x + player.arm.ball.radius > anims.x)
+                            {
+                                player.arm.ball.position.x = anims.x - player.arm.ball.radius;
+                                player.arm.ball.velocity.x *= -1;
+                            }
+                        }
+                        if (tiles[i] == 4)
+                        {
+                            if (player.arm.ball.position.x - player.arm.ball.radius < anims.x)
+                            {
+                                player.arm.ball.position.x = anims.x + player.arm.ball.radius;
+                                player.arm.ball.velocity.x *= -1;
+                            }
+                        }
+                        if (tiles[i] == 2)
+                        {
+                            if (player.arm.ball.position.y - player.arm.ball.radius < anims.y)
+                            {
+                                player.arm.ball.position.y = anims.y + player.arm.ball.radius;
+                                player.arm.ball.velocity.y *= -1;
+                            }
+                        }
+                    }
+                }
+
+
             }
         }
 

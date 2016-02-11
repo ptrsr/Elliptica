@@ -21,6 +21,7 @@ namespace GXPEngine
         private float lastframe = 0.0f;
         private int _directionX = 1;
         public Arm arm;
+        Ball ball;
 
         public Player(Vec2 pPosition = null) : base("player.png", 16 , 2)
         {
@@ -30,6 +31,7 @@ namespace GXPEngine
             acceleration = Vec2.zero;
 
             arm = new Arm(this);
+            arm.x += 10;
             AddChild(arm);
 
             x = position.x;
@@ -53,11 +55,6 @@ namespace GXPEngine
                 _directionX = -1;
             if (Input.mouseX >= x)
                 _directionX = 1;
-            if (Input.GetMouseButtonDown(0))
-            {
-                arm.ShootingBall();
-                arm.ShootingPortal();
-            }
             if (Input.GetKeyDown(Key.W))
             {
                 if (onGround)
@@ -71,9 +68,10 @@ namespace GXPEngine
             }
             if (Input.GetMouseButtonDown(0))
             {
+                if(!arm.CheckHasBall())
                 arm.ShootingPortal();
+                else
                 arm.ShootingBall();
-                acceleration.Add(new Vec2(0.8f, 0));
             }
  
             else if (Input.GetKey(Key.A))
