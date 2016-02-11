@@ -93,7 +93,6 @@ namespace GXPEngine
                         {
                             player.arm.projectile.Destroy();
                             player.arm.projectile = null;
-                            Console.WriteLine("CREATING PORTALSSSs");
                         }
                     }
                 }
@@ -101,7 +100,7 @@ namespace GXPEngine
                 {
                     if (ball.HitTest(anims))
                     {
-                        if (tiles[i] == 2)
+                        if (tiles[i] == 8 || tiles[i] == 4 || tiles[i] == 6 || tiles[i] == 2)
                             if (ball.position.y + ball.radius > anims.y)
                             {
 

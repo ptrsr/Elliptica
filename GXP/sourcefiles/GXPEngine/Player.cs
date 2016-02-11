@@ -55,8 +55,8 @@ namespace GXPEngine
                 _directionX = 1;
             if (Input.GetMouseButtonDown(0))
             {
-                arm.ShootingPortal();
                 arm.ShootingBall();
+                arm.ShootingPortal();
             }
             if (Input.GetKeyDown(Key.W))
             {

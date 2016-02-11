@@ -33,3 +33,8 @@ C:\Users\Roedie\Desktop\Elliptica\GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEng
 C:\Users\Roedie\Desktop\Elliptica\GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
 C:\Users\Roedie\Desktop\Elliptica\GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
 C:\Users\Roedie\Desktop\Elliptica\GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\Users\MasteR\Documents\GitHub\Elliptica\GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.exe
+C:\Users\MasteR\Documents\GitHub\Elliptica\GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+C:\Users\MasteR\Documents\GitHub\Elliptica\GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
+C:\Users\MasteR\Documents\GitHub\Elliptica\GXP\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\Users\MasteR\Documents\GitHub\Elliptica\GXP\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
