@@ -42,18 +42,18 @@ namespace GXPEngine
                 {
                     if (tiles[i] == 2)
                     {
-                        player.position.y = playerOldY;
+                        player.position.y = anims.y - player.height / 2;
                         player.velocity.y = 0;
                         player.SetOnGound();
                     }
                     if (tiles[i] == 12)
                     {
-                        player.position.x = playerOldX;
+                        player.position.x = anims.x + player.width / 2 + 64;
                         player.velocity.x = 0;
                     }
                     if (tiles[i] == 10)
                     {
-                        player.position.x = playerOldX;
+                        player.position.x = anims.x - player.width / 2;
                         player.velocity.x = 0;
                     }
                 }
