@@ -7,7 +7,7 @@ public class MyGame : Game
 
 	public MyGame () : base(1024, 768, false)
 	{
-        Level level = new Level("level1.tmx");
+        Level level = new Level("level2.tmx");
         AddChild(level);
 	}
 

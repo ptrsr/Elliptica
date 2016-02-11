@@ -9,7 +9,7 @@ namespace GXPEngine
     {
         //constructor not used because level uses inheritence and only needs the methods
         private AnimSprite animSprite;
-        const int TileSize = 64;
+        const int TileSize = 32;
 
         protected List<Item> items = new List<Item>();
         protected List<AnimSprite> background = new List<AnimSprite>();
@@ -123,7 +123,7 @@ namespace GXPEngine
         //adding an animation sprite with the right frame from the level
         private void AddSprite(int frame)
         {
-            animSprite = new AnimSprite("tilesheet1.png", 9, 5);
+            animSprite = new AnimSprite("tilesheet.png", 3, 3);
             animSprite.SetFrame(frame);
             AddChild(animSprite);
             background.Add(animSprite);

@@ -68,20 +68,20 @@ namespace GXPEngine
                 AnimSprite anims = background[i];
                 if (anims.HitTest(player))
                 {
-                    if (tiles[i] == 2)
+                    if (tiles[i] == 8)
                     {
-                        player.position.y = playerOldY;
+                        player.position.y = anims.y - player.height / 2;
                         player.velocity.y = 0;
                         player.SetOnGound();
                     }
-                    if (tiles[i] == 12)
+                    if (tiles[i] == 4)
                     {
-                        player.position.x = playerOldX;
+                        player.position.x = anims.x + player.width / 2 + 32;
                         player.velocity.x = 0;
                     }
-                    if (tiles[i] == 10)
+                    if (tiles[i] == 6)
                     {
-                        player.position.x = playerOldX;
+                        player.position.x = anims.x - player.width / 2;
                         player.velocity.x = 0;
                     }
                 }
@@ -89,10 +89,11 @@ namespace GXPEngine
                 {
                     if (anims.HitTest(player.arm.projectile))
                     {
-                        if(tiles[i] == 12)
+                        if(tiles[i] == 8 || tiles[i] == 4 || tiles[i] == 6 || tiles[i] == 2)
                         {
                             player.arm.projectile.Destroy();
                             player.arm.projectile = null;
+                            Console.WriteLine("CREATING PORTALSSSs");
                         }
                     }
                 }
