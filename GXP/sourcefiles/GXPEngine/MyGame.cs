@@ -3,20 +3,17 @@ using GXPEngine;
 using System.Drawing;
 
 public class MyGame : Game
-{	
-
-	public MyGame () : base(1024, 768, false,false)
+{
+    //Sound backGroundSound;
+	public MyGame () : base(1024, 768, false)
 	{
-        Level level = new Level("level2.tmx");
+        //backGroundSound = new Sound("background.wav");
+        Level level = new Level("level1.tmx");
         AddChild(level);
 	}
 
 	void Update ()
 	{
-        if (Input.GetKey(Key.SPACE))
-        {
-            targetFps = 20;
-        }
 	}
 
 	static void Main() {

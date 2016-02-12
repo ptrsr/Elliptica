@@ -31,6 +31,7 @@ namespace GXPEngine
         void Update()
         {
             Step();
+            velocity.Scale(0.99f);
         }
 
         public Vec2 position

@@ -7,7 +7,7 @@ namespace GXPEngine
 {
 
 
-    class Player : AnimSprite
+    public class Player : AnimSprite
     {
 
 
@@ -21,7 +21,6 @@ namespace GXPEngine
         private float lastframe = 0.0f;
         private int _directionX = 1;
         public Arm arm;
-        Ball ball;
 
         public Player(Vec2 pPosition = null) : base("player.png", 16 , 2)
         {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GXPEngine
 {
-    class Projectiles : Sprite
+    public class Projectiles : Sprite
     {
         public Projectiles() : base("checkers.png")
         {

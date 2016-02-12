@@ -9,6 +9,9 @@ namespace GXPEngine
     {
         //constructor not used because level uses inheritence and only needs the methods
         private AnimSprite animSprite;
+        protected Player player;
+        protected Trigger trigger;
+        protected Ball ball;
         const int TileSize = 32;
 
         protected List<Item> items = new List<Item>();
@@ -116,14 +119,42 @@ namespace GXPEngine
         //interpreting a single tile
         private void interpretCell(int x, int y, int frame)
         {
-            AddSprite(frame);
-            animSprite.SetXY(x, y);
+            if(frame < 95)
+            {
+                AddSprite(frame);
+                animSprite.SetXY(x, y);
+            }
+            switch (frame)
+            {
+                case 99:
+                    player = new Player();
+                    player.position.x = x;
+                    player.position.y = y;
+                    AddChild(player);
+                    break;
+                case 100:
+                    trigger = new Trigger();
+                    trigger.SetXY(x, y);
+                    trigger.x += 25;
+                    trigger.y += 16;
+                    trigger.triggerAnim.SetFrame(5);
+                    AddChild(trigger);
+                    break;
+                case 102:
+                    ball = new Ball();
+                    ball.position.x = x;
+                    ball.position.y = y;
+                    AddChild(ball);
+                    break;
+
+
+            }
 
         }
         //adding an animation sprite with the right frame from the level
         private void AddSprite(int frame)
         {
-            animSprite = new AnimSprite("tilesheet.png", 3, 3);
+            animSprite = new AnimSprite("tilesheet_1.png", 9, 5);
             animSprite.SetFrame(frame);
             AddChild(animSprite);
             background.Add(animSprite);

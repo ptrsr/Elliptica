@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GXPEngine
 {
-    class Arm : AnimSprite
+    public class Arm : AnimSprite
     {
         private Player _player;
         private Vec2 _armVector;

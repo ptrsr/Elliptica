@@ -73,6 +73,7 @@
     <Compile Include="Level\TMXLevel.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Projectiles.cs" />
+    <Compile Include="Trigger.cs" />
     <Compile Include="Vec2.cs" />
   </ItemGroup>
   <ItemGroup />
