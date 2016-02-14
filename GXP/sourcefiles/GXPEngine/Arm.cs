@@ -11,7 +11,7 @@ namespace GXPEngine
         private Vec2 _armVector;
         public Projectiles projectile;
         public Ball ball;
-        private bool hasBall = false;
+        public bool hasBall = false;
 
         public Arm(Player player) : base("arm.png",2,1)
         {
@@ -22,8 +22,9 @@ namespace GXPEngine
 
         void Update()
         {
-            _armVector = new Vec2(Input.mouseX - _player.x, Input.mouseY - _player.y).Normalize().Multiply(this.height * 1.5f);
+            _armVector = new Vec2(Input.mouseX - (_player.x + x), Input.mouseY - (_player.y + y)).Normalize().Multiply(this.height * 1.5f);
             RotateArm();
+            CheckBall();
         }
 
         void RotateArm ()
@@ -41,48 +42,33 @@ namespace GXPEngine
             }
         }
 
-        public void ShootingPortal()
+        public void Shoot()
         {
-            if(projectile == null)
+            if (hasBall == true)
             {
-                projectile = new Projectiles();
-                game.AddChild(projectile);
-                projectile.x = _player.x + _armVector.x;
-                projectile.y = _player.y + _armVector.y;
-                projectile.rotation = Vec2.Rad2Deg(Mathf.Atan2(_armVector.y, _armVector.x));
-            }
-        }
-        public void ShootingBall()
-        {
-            if (ball == null)
-            {
-                ball = new Ball();
-                game.AddChild(ball);
-                ball.position.x = _player.x;
-                ball.position.y = _player.y;
+                ball = new Ball(_player._lvl, new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
+                _player._lvl.AddChild(ball);
                 ball.velocity.SetXY(_armVector.Scale(0.8f));
-                ball.rotation = this.rotation;
+
                 hasBall = false;
                 SetFrame(0);
+
+            } else if (projectile == null) {
+
+                    projectile = new Projectiles();
+                    game.AddChild(projectile);
+                    projectile.x = _player.x + _armVector.x;
+                    projectile.y = _player.y + _armVector.y;
+                    projectile.rotation = Vec2.Rad2Deg(Mathf.Atan2(_armVector.y, _armVector.x));
             }
         }
-        public void BallArm()
+
+        public void CheckBall()
         {
-            SetFrame(1);
-            hasBall = true;
+            if (hasBall == true)
+                SetFrame(1);
+            else 
+                SetFrame(0);
         }
-
-        public bool CheckHasBall()
-        {
-            return hasBall;
-        }
-
-        public Ball GetBall()
-        {
-            return ball;
-        }
-        
-
-
     }
 }

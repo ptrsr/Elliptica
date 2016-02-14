@@ -14,7 +14,7 @@ namespace GXPEngine
         private Vec2 _position;
         private Vec2 _velocity;
         private Vec2 _acceleration;
-        private TMXLevel _lvl;
+        public TMXLevel _lvl;
 
         private float _gravity = 1;
 
@@ -37,8 +37,8 @@ namespace GXPEngine
             acceleration = Vec2.zero;
 
             arm = new Arm(this);
-            arm.x += 10;
-            arm.y -= 60;
+            arm.SetXY(10, -60);
+
             AddChild(arm);
 
             x = position.x;
@@ -51,17 +51,13 @@ namespace GXPEngine
             Movements();
             UpdateAnimation();
             Step();
-
-            acceleration = Vec2.zero;
-            velocity.x *= 0.90f;
-            velocity.y *= 0.90f;
         }
 
         private void Movements()
         {
             if (Input.GetKey(Key.W) && onGround)
             {
-                acceleration.Add(new Vec2(0, -20));
+                acceleration.Add(new Vec2(0, -30));
             }
 
             if (Input.GetKey(Key.D))
@@ -71,10 +67,7 @@ namespace GXPEngine
 
             if (Input.GetMouseButtonDown(0))
             {
-                if(!arm.CheckHasBall())
-                arm.ShootingPortal();
-                else
-                arm.ShootingBall();
+                arm.Shoot();
             }
  
             else if (Input.GetKey(Key.A))
@@ -100,7 +93,7 @@ namespace GXPEngine
             position.x += velocity.x;
             x = position.x;
 
-            wall = _lvl.CheckCollision();
+            wall = _lvl.CheckCollision(this);
 
             if (wall != null)
             {
@@ -117,28 +110,44 @@ namespace GXPEngine
             position.y += velocity.y;
             y = position.y;
 
-            wall = _lvl.CheckCollision();
+            wall = _lvl.CheckCollision(this);
 
             if (wall != null)
             {
                 direction = velocity.y < 0 ? -1 : 1;
 
                 if (direction == 1)
+                {
                     position.y = wall.y;
+                    onGround = true;
+                }
 
                 if (direction == -1)
                     position.y = wall.y + height + 32;
 
                 velocity.y = 0;
-                onGround = true;
             }
             y = position.y;
+
+            // Friction
+            acceleration = Vec2.zero;
+            velocity.x *= 0.90f;
+            velocity.y *= 0.99f;
         }
 
-        public void PickUpBall()
+        public void OnCollision(GameObject other)
         {
-            arm.BallArm();
+            if (other is Ball)
+            {
+                Ball ball = (Ball)other;
+                if (ball.timer > 10)
+                {
+                    arm.hasBall = true;
+                    other.Destroy();
+                }
+            }
         }
+
         void UpdateAnimation()
         {
             if (velocity.y == 0)

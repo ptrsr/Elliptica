@@ -12,26 +12,73 @@ namespace GXPEngine
         private Vec2 _position;
         private Vec2 _velocity;
         private Vec2 _acceleration;
-        private Vec2 _gravity = new Vec2(0,1);
-        
+        private float _gravity = 1;
+        public int timer;
 
-        public Ball(Vec2 pPosition = null) : base("Solidball.png")
+        private TMXLevel _lvl;
+
+        public Ball(TMXLevel lvl, Vec2 spawnPos) : base("Solidball.png")
         {
+            _lvl = lvl;
+            SetXY(spawnPos.x, spawnPos.y);
             radius = 8;
-            SetOrigin(radius * 2, radius * 2);
-            position = pPosition;
+
             velocity = Vec2.zero;
             acceleration = Vec2.zero;
-            SetOrigin(radius, radius);
-            x = position.x;
-            y = position.y;
+            position = spawnPos;
 
-            _acceleration.Add(_gravity);
+            SetOrigin(width / 2, width / 2);
+
         }
         void Update()
         {
             Step();
+            timer++;
+        }
+
+        public void Step()
+        {
+            int direction;
+            Wall wall;
+
+            // X Collision
+            velocity.x += acceleration.x;
+            position.x += velocity.x;
+            x = position.x;
+
+            wall = _lvl.CheckCollision(this);
+
+            if (wall != null)
+            {
+                direction = velocity.x > 0 ? -1 : 1;
+
+                position.x = wall.x + 16 + direction * (width / 2 + 17);
+                velocity.x *= -1;
+            }
+            x = position.x;
+
+            // Y Collision
+            acceleration.y += _gravity;
+            velocity.y += acceleration.y;
+            position.y += velocity.y;
+            y = position.y;
+
+            wall = _lvl.CheckCollision(this);
+
+            if (wall != null)
+            {
+                direction = velocity.y > 0 ? -1 : 1;
+
+                position.y = wall.y + 16 + direction * (width / 2 + 16);
+
+                velocity.y *= -1;
+            }
+            y = position.y;
+
+            // Friction
+            acceleration = Vec2.zero;
             velocity.Scale(0.99f);
+
         }
 
         public Vec2 position
@@ -68,16 +115,6 @@ namespace GXPEngine
             {
                 return _acceleration;
             }
-        }
-
-
-        public void Step()
-        {
-            _velocity.Add(_acceleration);
-            _position.Add(_velocity);
-
-            x = _position.x;
-            y = _position.y;
         }
     }
 }

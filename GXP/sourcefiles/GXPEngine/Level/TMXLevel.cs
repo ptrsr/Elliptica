@@ -136,9 +136,7 @@ namespace GXPEngine
                     AddChild(trigger);
                     break;
                 case 102:
-                    ball = new Ball();
-                    ball.position.x = x;
-                    ball.position.y = y;
+                    ball = new Ball(this,new Vec2(x,y));
                     AddChild(ball);
                     break;
 
@@ -156,12 +154,12 @@ namespace GXPEngine
 
         }
 
-        public Wall CheckCollision() {
+        public Wall CheckCollision(GameObject other) {
             Wall wall;
             for (int i = 0; i < background.Count; i++)
             {
                 wall = background[i];
-                if (player.HitTest(wall))
+                if (other.HitTest(wall))
                     return wall;
             }
             return null;
