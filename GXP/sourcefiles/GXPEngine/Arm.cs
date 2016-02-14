@@ -9,7 +9,7 @@ namespace GXPEngine
     {
         private Player _player;
         private Vec2 _armVector;
-        public Projectiles projectile;
+        public Projectile PortalBall;
         public Ball ball;
         public bool hasBall = false;
 
@@ -46,20 +46,18 @@ namespace GXPEngine
         {
             if (hasBall == true)
             {
-                ball = new Ball(_player._lvl, new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
-                _player._lvl.AddChild(ball);
+                ball = new Ball(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
+                TMXLevel.Return().AddChild(ball);
                 ball.velocity.SetXY(_armVector.Scale(0.8f));
 
                 hasBall = false;
                 SetFrame(0);
 
-            } else if (projectile == null) {
+            } else if (PortalBall == null) {
 
-                    projectile = new Projectiles();
-                    game.AddChild(projectile);
-                    projectile.x = _player.x + _armVector.x;
-                    projectile.y = _player.y + _armVector.y;
-                    projectile.rotation = Vec2.Rad2Deg(Mathf.Atan2(_armVector.y, _armVector.x));
+                PortalBall = new PortalBall(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
+                TMXLevel.Return().AddChild(PortalBall);
+                PortalBall.velocity.SetXY(_armVector.Scale(0.8f));
             }
         }
 

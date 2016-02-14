@@ -38,10 +38,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arm.cs" />
-    <Compile Include="Ball.cs" />
+    <Compile Include="Level\Objects\Ball.cs" />
     <Compile Include="Level\Item.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\Map.cs" />
+    <Compile Include="Level\Objects\Portal.cs" />
+    <Compile Include="Level\Objects\PortalBall.cs" />
     <Compile Include="Level\Objects\Wall.cs" />
     <Compile Include="MyGame.cs" />
     <Compile Include="GXPEngine\Canvas.cs" />
@@ -73,7 +75,7 @@
     <Compile Include="Level\TMXParser.cs" />
     <Compile Include="Level\TMXLevel.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Projectiles.cs" />
+    <Compile Include="Level\Objects\Projectile.cs" />
     <Compile Include="Trigger.cs" />
     <Compile Include="Vec2.cs" />
   </ItemGroup>

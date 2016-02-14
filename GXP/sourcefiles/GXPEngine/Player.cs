@@ -11,10 +11,9 @@ namespace GXPEngine
     {
 
 
-        private Vec2 _position;
-        private Vec2 _velocity;
-        private Vec2 _acceleration;
-        public TMXLevel _lvl;
+        public Vec2 _position;
+        public Vec2 _velocity;
+        public Vec2 _acceleration;
 
         private float _gravity = 1;
 
@@ -27,12 +26,11 @@ namespace GXPEngine
 
         public Arm arm;
 
-        public Player(TMXLevel lvl, Vec2 pPosition) : base("player.png", 16 , 2)
+        public Player() : base("player.png", 16 , 2)
         {
-            _lvl = lvl;
-
             SetOrigin(width / 2, height);
-            position = pPosition;
+
+            position = Vec2.zero;
             velocity = Vec2.zero;
             acceleration = Vec2.zero;
 
@@ -93,7 +91,7 @@ namespace GXPEngine
             position.x += velocity.x;
             x = position.x;
 
-            wall = _lvl.CheckCollision(this);
+            wall = TMXLevel.Return().CheckCollision(this);
 
             if (wall != null)
             {
@@ -110,7 +108,7 @@ namespace GXPEngine
             position.y += velocity.y;
             y = position.y;
 
-            wall = _lvl.CheckCollision(this);
+            wall = TMXLevel.Return().CheckCollision(this);
 
             if (wall != null)
             {

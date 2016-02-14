@@ -11,6 +11,9 @@ namespace GXPEngine
         protected Player player;
         protected Trigger trigger;
         protected Ball ball;
+        
+        private static TMXLevel _lvl;
+        
         const int TileSize = 32;
 
         protected List<Item> items = new List<Item>();
@@ -18,6 +21,7 @@ namespace GXPEngine
         protected List<int> tiles = new List<int>();
         public TMXLevel()
         {
+            _lvl = this;
         }
         //this is for interpreting only an object groups there is a different method for layer
         protected void InterpretObjectGroup(string filename)
@@ -55,21 +59,6 @@ namespace GXPEngine
             items.Add(scenery);
             AddChild(scenery);
         }
-
-        //finds a player spawnpoint
-        ////checks for all children and if there is type_spawn it returns it
-        //protected Item FindPlayerSpawn()
-        //{
-        //    foreach (GameObject child in GetChildren())
-        //    {
-        //        if (child is Item)
-        //        {
-        //            Item scenery = child as Item;
-        //            if (scenery.GetItemType() == Item.TYPE_SPAWN) return scenery;
-        //        }
-        //    }
-        //    return null;
-        //}
 
         //for interpreting the layers and not the object groups
         protected void InterpretLayer(string filename)
@@ -124,7 +113,8 @@ namespace GXPEngine
             switch (frame)
             {
                 case 99:
-                    player = new Player(this, new Vec2(x,y));
+                    player = new Player();
+                    player.position = new Vec2(x,y);
                     AddChild(player);
                     break;
                 case 100:
@@ -136,7 +126,7 @@ namespace GXPEngine
                     AddChild(trigger);
                     break;
                 case 102:
-                    ball = new Ball(this,new Vec2(x,y));
+                    ball = new Ball(new Vec2(x,y));
                     AddChild(ball);
                     break;
 
@@ -165,5 +155,9 @@ namespace GXPEngine
             return null;
         }
 
+        public static TMXLevel Return()
+        {
+            return _lvl;
+        }
     }
 }

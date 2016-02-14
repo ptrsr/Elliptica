@@ -6,22 +6,18 @@ using System.Drawing;
 
 namespace GXPEngine
 {
-    public class Ball : Sprite
+    public abstract class Projectile : Sprite
     {
-        public readonly int radius;
-        private Vec2 _position;
-        private Vec2 _velocity;
-        private Vec2 _acceleration;
-        private float _gravity = 1;
-        public int timer;
+        public int radius;
+        public Vec2 _position;
+        public Vec2 _velocity;
+        public Vec2 _acceleration;
 
-        private TMXLevel _lvl;
+        public float _gravity = 1;
 
-        public Ball(TMXLevel lvl, Vec2 spawnPos) : base("Solidball.png")
+        public Projectile(string filename, Vec2 spawnPos, int radius) : base(filename + ".png")
         {
-            _lvl = lvl;
             SetXY(spawnPos.x, spawnPos.y);
-            radius = 8;
 
             velocity = Vec2.zero;
             acceleration = Vec2.zero;
@@ -30,13 +26,8 @@ namespace GXPEngine
             SetOrigin(width / 2, width / 2);
 
         }
-        void Update()
-        {
-            Step();
-            timer++;
-        }
 
-        public void Step()
+        public virtual void Step()
         {
             int direction;
             Wall wall;
@@ -46,7 +37,7 @@ namespace GXPEngine
             position.x += velocity.x;
             x = position.x;
 
-            wall = _lvl.CheckCollision(this);
+            wall = TMXLevel.Return().CheckCollision(this);
 
             if (wall != null)
             {
@@ -63,7 +54,7 @@ namespace GXPEngine
             position.y += velocity.y;
             y = position.y;
 
-            wall = _lvl.CheckCollision(this);
+            wall = TMXLevel.Return().CheckCollision(this);
 
             if (wall != null)
             {
