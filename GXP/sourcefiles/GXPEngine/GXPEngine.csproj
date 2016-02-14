@@ -42,6 +42,7 @@
     <Compile Include="Level\Item.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\Map.cs" />
+    <Compile Include="Level\Objects\Wall.cs" />
     <Compile Include="MyGame.cs" />
     <Compile Include="GXPEngine\Canvas.cs" />
     <Compile Include="GXPEngine\Game.cs" />

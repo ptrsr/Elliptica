@@ -8,14 +8,13 @@ namespace GXPEngine
     public class TMXLevel : GameObject
     {
         //constructor not used because level uses inheritence and only needs the methods
-        private AnimSprite animSprite;
         protected Player player;
         protected Trigger trigger;
         protected Ball ball;
         const int TileSize = 32;
 
         protected List<Item> items = new List<Item>();
-        protected List<AnimSprite> background = new List<AnimSprite>();
+        protected List<Wall> background = new List<Wall>();
         protected List<int> tiles = new List<int>();
         public TMXLevel()
         {
@@ -119,17 +118,13 @@ namespace GXPEngine
         //interpreting a single tile
         private void interpretCell(int x, int y, int frame)
         {
-            if(frame < 95)
-            {
-                AddSprite(frame);
-                animSprite.SetXY(x, y);
-            }
+            if (frame < 95)
+               AddWall(frame, x, y);
+            
             switch (frame)
             {
                 case 99:
-                    player = new Player();
-                    player.position.x = x;
-                    player.position.y = y;
+                    player = new Player(this, new Vec2(x,y));
                     AddChild(player);
                     break;
                 case 100:
@@ -152,13 +147,24 @@ namespace GXPEngine
 
         }
         //adding an animation sprite with the right frame from the level
-        private void AddSprite(int frame)
+        private void AddWall(int frame, int x, int y)
         {
-            animSprite = new AnimSprite("tilesheet_1.png", 9, 5);
-            animSprite.SetFrame(frame);
-            AddChild(animSprite);
-            background.Add(animSprite);
+            Wall wall = new Wall(frame);
+            wall.SetXY(x, y);
+            AddChild(wall);
+            background.Add(wall);
 
+        }
+
+        public Wall CheckCollision() {
+            Wall wall;
+            for (int i = 0; i < background.Count; i++)
+            {
+                wall = background[i];
+                if (player.HitTest(wall))
+                    return wall;
+            }
+            return null;
         }
 
     }
