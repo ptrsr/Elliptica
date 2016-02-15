@@ -13,7 +13,14 @@ namespace GXPEngine
         public Vec2 _velocity;
         public Vec2 _acceleration;
 
+
+        private float frame = 0.0f;
+        private float firstframe = 0.0f;
+        private float lastframe = 0.0f;
+
         public float _gravity = 1;
+
+        AnimSprite anims;
 
         public Projectile(string filename, Vec2 spawnPos, int radius) : base(filename + ".png")
         {
@@ -25,25 +32,48 @@ namespace GXPEngine
 
             SetOrigin(width / 2, width / 2);
 
+            anims = new AnimSprite("GlowingBlue.png", 4, 1);
+            anims.x = x;
+            anims.y = y;
+            AddChild(anims);
+
+
+        }
+
+        void Update()
+        {
+            UpdateAnimation();
+        }
+
+        protected void UpdateAnimation()
+        {
+            anims.x = position.x;
+            anims.y = position.y;
+
+            frame += 0.5f;
+
+            firstframe = 0;
+            lastframe = 3;
+            anims.SetFrame((int)frame);
         }
 
         public virtual void Step()
         {
             int direction;
-            Wall wall;
+            GameObject tileObject;
 
             // X Collision
             velocity.x += acceleration.x;
             position.x += velocity.x;
             x = position.x;
 
-            wall = TMXLevel.Return().CheckCollision(this);
+            tileObject = TMXLevel.Return().CheckCollision(this);
 
-            if (wall != null)
+            if (tileObject != null)
             {
                 direction = velocity.x > 0 ? -1 : 1;
 
-                position.x = wall.x + 16 + direction * (width / 2 + 17);
+                position.x = tileObject.x + 16 + direction * (width / 2 + 17);
                 velocity.x *= -1;
             }
             x = position.x;
@@ -54,13 +84,13 @@ namespace GXPEngine
             position.y += velocity.y;
             y = position.y;
 
-            wall = TMXLevel.Return().CheckCollision(this);
+            tileObject = TMXLevel.Return().CheckCollision(this);
 
-            if (wall != null)
+            if (tileObject != null)
             {
                 direction = velocity.y > 0 ? -1 : 1;
 
-                position.y = wall.y + 16 + direction * (width / 2 + 16);
+                position.y = tileObject.y + 16 + direction * (width / 2 + 16);
 
                 velocity.y *= -1;
             }

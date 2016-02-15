@@ -11,14 +11,16 @@ namespace GXPEngine
         protected Player player;
         protected Trigger trigger;
         protected Ball ball;
+        protected Door door;
         
         private static TMXLevel _lvl;
         
         const int TileSize = 32;
 
         protected List<Item> items = new List<Item>();
-        protected List<Wall> background = new List<Wall>();
+        protected List<GameObject> background = new List<GameObject>();
         protected List<int> tiles = new List<int>();
+        protected List<Trigger> triggers = new List<Trigger>();
         public TMXLevel()
         {
             _lvl = this;
@@ -59,6 +61,21 @@ namespace GXPEngine
             items.Add(scenery);
             AddChild(scenery);
         }
+
+        //finds a player spawnpoint
+        ////checks for all children and if there is type_spawn it returns it
+        //protected Item FindPlayerSpawn()
+        //{
+        //    foreach (GameObject child in GetChildren())
+        //    {
+        //        if (child is Item)
+        //        {
+        //            Item scenery = child as Item;
+        //            if (scenery.GetItemType() == Item.TYPE_SPAWN) return scenery;
+        //        }
+        //    }
+        //    return null;
+        //}
 
         //for interpreting the layers and not the object groups
         protected void InterpretLayer(string filename)
@@ -122,12 +139,20 @@ namespace GXPEngine
                     trigger.SetXY(x, y);
                     trigger.x += 25;
                     trigger.y += 16;
-                    trigger.triggerAnim.SetFrame(5);
+                    trigger.triggerAnim.SetFrame(0);
+                    triggers.Add(trigger);
                     AddChild(trigger);
                     break;
                 case 102:
                     ball = new Ball(new Vec2(x,y));
                     AddChild(ball);
+                    break;
+                case 103:
+                    door = new Door();
+                    door.x = x;
+                    door.y = y;
+                    background.Add(door);
+                    AddChild(door);
                     break;
 
 
@@ -144,13 +169,28 @@ namespace GXPEngine
 
         }
 
-        public Wall CheckCollision(GameObject other) {
-            Wall wall;
+        public GameObject CheckCollision(GameObject other) {
+            GameObject tiledObject;
             for (int i = 0; i < background.Count; i++)
             {
-                wall = background[i];
-                if (other.HitTest(wall))
-                    return wall;
+                tiledObject = background[i];
+                if (other.HitTest(tiledObject))
+                    return tiledObject;
+            }
+            return null;
+        }
+        public Trigger CheckTriggerCollisions(Ball ball)
+        {
+            Trigger trigger;
+            for(int i = 0; i < triggers.Count; i++)
+            {
+                trigger = triggers[i];
+                if (ball.HitTest(trigger))
+                {
+                    return trigger;
+
+                }
+                
             }
             return null;
         }

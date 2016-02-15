@@ -15,5 +15,22 @@ namespace GXPEngine
             InterpretLayer(filename);
             InterpretObjectGroup(filename);
         }
+
+        void Update()
+        {
+            if(trigger != null)
+            if(trigger.GetFrame() == 1)
+            {
+                door.ActivateDoor();
+                if (door.DistanceTo(player.position.x, player.position.y) < 200)
+                {
+                    door.UpdateAnimation(door.DistanceTo(player.position.x, player.position.y));
+                }
+            }
+            
+            
+            
+        }
+
     }
 }
