@@ -84,20 +84,20 @@ namespace GXPEngine
         public void Step()
         {
             int direction;
-            Wall wall;
+            GameObject tiledObject;
 
             // X Collision
             velocity.x += acceleration.x;
             position.x += velocity.x;
             x = position.x;
 
-            wall = TMXLevel.Return().CheckCollision(this);
+            tiledObject = TMXLevel.Return().CheckCollision(this);
 
-            if (wall != null)
+            if (tiledObject != null)
             {
                 direction = velocity.x > 0 ? -1 : 1;
 
-                position.x = wall.x + 16 + direction * (width / 2 + 17);
+                position.x = tiledObject.x + 16 + direction * (width / 2 + 17);
                 velocity.x = 0;
             }
             x = position.x;
@@ -108,20 +108,20 @@ namespace GXPEngine
             position.y += velocity.y;
             y = position.y;
 
-            wall = TMXLevel.Return().CheckCollision(this);
+            tiledObject = TMXLevel.Return().CheckCollision(this);
 
-            if (wall != null)
+            if (tiledObject != null)
             {
                 direction = velocity.y < 0 ? -1 : 1;
 
                 if (direction == 1)
                 {
-                    position.y = wall.y;
+                    position.y = tiledObject.y;
                     onGround = true;
                 }
 
                 if (direction == -1)
-                    position.y = wall.y + height + 32;
+                    position.y = tiledObject.y + height + 32;
 
                 velocity.y = 0;
             }
