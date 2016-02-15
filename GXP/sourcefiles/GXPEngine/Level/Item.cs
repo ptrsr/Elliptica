@@ -46,8 +46,6 @@ namespace GXPEngine
             }
         }
 
-
-
         //adds a visual to this object
         void addGfx(int itemID)
         {
@@ -73,16 +71,6 @@ namespace GXPEngine
         public int GetItemType()
         {
             return this.type;
-        }
-
-        //returns true if tile is walkable by player
-        //we can use this as the collisions if layer 1 true if not false
-        public bool IsWalkable()
-        {
-            if (this.type == TYPE_KEY) return true;
-            if (this.type == TYPE_GEM) return true;
-            if (this.type > 1) return false;
-            return true;
         }
     }
 }
