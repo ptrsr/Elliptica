@@ -18,6 +18,7 @@ namespace GXPEngine
 
         void Update()
         {
+            if(trigger != null)
             if(trigger.GetFrame() == 1)
             {
                 door.ActivateDoor();
