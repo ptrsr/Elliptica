@@ -5,42 +5,68 @@ using System.Text;
 
 namespace GXPEngine
 {
-    class Arm : Sprite
+    public class Arm : AnimSprite
     {
         private Player _player;
         private Vec2 _armVector;
-        public Projectiles projectile;
+        public Projectile PortalBall;
+        public Ball ball;
+        public bool hasBall = false;
 
-        public Arm(Player player) : base("checkers.png")
+        public Arm(Player player) : base("arm.png",2,1)
         {
             SetOrigin(0, height / 2);
             _player = player;
+            SetFrame(0);
         }
 
         void Update()
         {
-            _armVector = new Vec2(Input.mouseX - _player.x, Input.mouseY - _player.y).Normalize().Multiply(this.height * 1.5f);
+            _armVector = new Vec2(Input.mouseX - (_player.x + x), Input.mouseY - (_player.y + y)).Normalize().Multiply(this.height * 1.5f);
             RotateArm();
+            CheckBall();
         }
 
         void RotateArm ()
         {
-            float angleInRadians = Mathf.Atan2(_armVector.y, _armVector.x);
-            rotation = Vec2.Rad2Deg(angleInRadians);
-        }
-
-        public void Shooting()
-        {
-            if(projectile == null)
+            float angleInRadians;
+            if (_player.scaleX == 1)
             {
-                projectile = new Projectiles();
-                game.AddChild(projectile);
-                projectile.x = _player.x + _armVector.x;
-                projectile.y = _player.y + _armVector.y;
-                projectile.rotation = this.rotation;
+                angleInRadians = Mathf.Atan2(_armVector.y, _armVector.x);
+                rotation = Vec2.Rad2Deg(angleInRadians);
+            }
+            if (_player.scaleX == -1)
+            {
+                angleInRadians = -Mathf.Atan2(_armVector.y, _armVector.x);
+                rotation = Vec2.Rad2Deg(angleInRadians) + 180;
             }
         }
 
+        public void Shoot()
+        {
+            if (hasBall == true)
+            {
+                ball = new Ball(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
+                TMXLevel.Return().AddChild(ball);
+                ball.velocity.SetXY(_armVector.Scale(0.8f));
 
+                hasBall = false;
+                SetFrame(0);
+
+            } else if (PortalBall == null) {
+
+                PortalBall = new PortalBall(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
+                TMXLevel.Return().AddChild(PortalBall);
+                PortalBall.velocity.SetXY(_armVector.Scale(0.8f));
+            }
+        }
+
+        public void CheckBall()
+        {
+            if (hasBall == true)
+                SetFrame(1);
+            else 
+                SetFrame(0);
+        }
     }
 }

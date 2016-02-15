@@ -8,14 +8,20 @@ namespace GXPEngine
     public class TMXLevel : GameObject
     {
         //constructor not used because level uses inheritence and only needs the methods
-        private AnimSprite animSprite;
-        const int TileSize = 64;
+        protected Player player;
+        protected Trigger trigger;
+        protected Ball ball;
+        
+        private static TMXLevel _lvl;
+        
+        const int TileSize = 32;
 
         protected List<Item> items = new List<Item>();
-        protected List<AnimSprite> background = new List<AnimSprite>();
+        protected List<Wall> background = new List<Wall>();
         protected List<int> tiles = new List<int>();
         public TMXLevel()
         {
+            _lvl = this;
         }
         //this is for interpreting only an object groups there is a different method for layer
         protected void InterpretObjectGroup(string filename)
@@ -53,21 +59,6 @@ namespace GXPEngine
             items.Add(scenery);
             AddChild(scenery);
         }
-
-        //finds a player spawnpoint
-        ////checks for all children and if there is type_spawn it returns it
-        //protected Item FindPlayerSpawn()
-        //{
-        //    foreach (GameObject child in GetChildren())
-        //    {
-        //        if (child is Item)
-        //        {
-        //            Item scenery = child as Item;
-        //            if (scenery.GetItemType() == Item.TYPE_SPAWN) return scenery;
-        //        }
-        //    }
-        //    return null;
-        //}
 
         //for interpreting the layers and not the object groups
         protected void InterpretLayer(string filename)
@@ -116,19 +107,57 @@ namespace GXPEngine
         //interpreting a single tile
         private void interpretCell(int x, int y, int frame)
         {
-            AddSprite(frame);
-            animSprite.SetXY(x, y);
+            if (frame < 95)
+               AddWall(frame, x, y);
+            
+            switch (frame)
+            {
+                case 99:
+                    player = new Player();
+                    player.position = new Vec2(x,y);
+                    AddChild(player);
+                    break;
+                case 100:
+                    trigger = new Trigger();
+                    trigger.SetXY(x, y);
+                    trigger.x += 25;
+                    trigger.y += 16;
+                    trigger.triggerAnim.SetFrame(5);
+                    AddChild(trigger);
+                    break;
+                case 102:
+                    ball = new Ball(new Vec2(x,y));
+                    AddChild(ball);
+                    break;
+
+
+            }
 
         }
         //adding an animation sprite with the right frame from the level
-        private void AddSprite(int frame)
+        private void AddWall(int frame, int x, int y)
         {
-            animSprite = new AnimSprite("tilesheet1.png", 9, 5);
-            animSprite.SetFrame(frame);
-            AddChild(animSprite);
-            background.Add(animSprite);
+            Wall wall = new Wall(frame);
+            wall.SetXY(x, y);
+            AddChild(wall);
+            background.Add(wall);
 
         }
 
+        public Wall CheckCollision(GameObject other) {
+            Wall wall;
+            for (int i = 0; i < background.Count; i++)
+            {
+                wall = background[i];
+                if (other.HitTest(wall))
+                    return wall;
+            }
+            return null;
+        }
+
+        public static TMXLevel Return()
+        {
+            return _lvl;
+        }
     }
 }
