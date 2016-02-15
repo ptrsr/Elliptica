@@ -8,7 +8,7 @@ namespace GXPEngine
     public class Wall : AnimSprite
     {
         public string type;
-        public Wall(int frame) : base("tilesheet.png",9,5)
+        public Wall(int frame) : base("tilesheet.png",9,11)
         {
             SetFrame(frame);
 
