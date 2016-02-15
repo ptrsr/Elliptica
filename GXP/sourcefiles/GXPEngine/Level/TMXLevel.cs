@@ -18,7 +18,7 @@ namespace GXPEngine
         const int TileSize = 32;
 
         protected List<Item> items = new List<Item>();
-        protected List<GameObject> background = new List<GameObject>();
+        public List<GameObject> collisionSprites = new List<GameObject>();
         protected List<int> tiles = new List<int>();
         protected List<Trigger> triggers = new List<Trigger>();
         public TMXLevel()
@@ -151,7 +151,7 @@ namespace GXPEngine
                     door = new Door();
                     door.x = x;
                     door.y = y;
-                    background.Add(door);
+                    collisionSprites.Add(door);
                     AddChild(door);
                     break;
 
@@ -162,18 +162,18 @@ namespace GXPEngine
         //adding an animation sprite with the right frame from the level
         private void AddWall(int frame, int x, int y)
         {
-            Wall wall = new Wall(frame);
+            CollisionTile wall = new CollisionTile(frame);
             wall.SetXY(x, y);
             AddChild(wall);
-            background.Add(wall);
+            collisionSprites.Add(wall);
 
         }
 
         public GameObject CheckCollision(GameObject other) {
             GameObject tiledObject;
-            for (int i = 0; i < background.Count; i++)
+            for (int i = 0; i < collisionSprites.Count; i++)
             {
-                tiledObject = background[i];
+                tiledObject = collisionSprites[i];
                 if (other.HitTest(tiledObject))
                     return tiledObject;
             }

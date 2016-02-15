@@ -53,7 +53,7 @@ namespace GXPEngine
                 hasBall = false;
                 SetFrame(0);
 
-            } else if (PortalBall == null) {
+            } else {
 
                 PortalBall = new PortalBall(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
                 TMXLevel.Return().AddChild(PortalBall);
