@@ -9,7 +9,7 @@ namespace GXPEngine
     public class Ball : Projectile
     {
         public int timer;
-
+        Trigger trigger;
         public Ball(Vec2 spawnPos) : base("Solidball", spawnPos, 8)
         {
 
@@ -18,6 +18,18 @@ namespace GXPEngine
         {
             timer++;
             Step();
+            CheckCollisionsTrigger();
+        }
+
+    private void CheckCollisionsTrigger()
+        {
+            
+            trigger = TMXLevel.Return().CheckTriggerCollisions(this);
+            if(trigger != null)
+            {
+                this.Destroy();
+                trigger.triggerAnim.SetFrame(1);
+            }
         }
     }
 }

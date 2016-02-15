@@ -12,11 +12,15 @@ namespace GXPEngine
         public Trigger() : base("hitbox.png")
         {
             alpha = 0.0f;
-            triggerAnim = new AnimSprite("trigger.png", 5, 1);
+            triggerAnim = new AnimSprite("trigger.png", 3, 1);
 
             triggerAnim.x -= 25;
             triggerAnim.y -= 16;
             AddChild(triggerAnim);
+        }
+        public int GetFrame()
+        {
+            return triggerAnim.currentFrame;
         }
     }
 }
