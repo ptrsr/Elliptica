@@ -16,6 +16,7 @@ namespace GXPEngine
         public Vec2 _acceleration;
 
         private float _gravity = 1;
+        private float _slice = 0;
 
         private bool onGround = false;
         private float frame = 0.0f;
@@ -49,6 +50,18 @@ namespace GXPEngine
             Movements();
             UpdateAnimation();
             Step();
+
+            if (Input.GetKey(Key.LEFT))
+            {
+                _slice -= 0.05f;
+                Slice(_slice);
+            }
+            if (Input.GetKey(Key.RIGHT))
+            {
+                _slice += 0.05f;
+                Slice(_slice);
+            }
+            Console.WriteLine(_slice);
         }
 
         private void Movements()
@@ -76,7 +89,8 @@ namespace GXPEngine
             else {
                 onGround = false;
             }
-            scaleX = position.x > Input.mouseX ? -1 : 1;
+            float scale = 1 - Mathf.Abs(_slice);
+            scaleX = position.x > Input.mouseX ? -scale : scale;
         
         onGround = false;
         }
@@ -182,6 +196,13 @@ namespace GXPEngine
 
 
             SetFrame((int)frame);
+        }
+
+        public void Slice(float slice)
+        {
+            _slice = slice;
+            SetHorSlice(slice);
+            setUVs();
         }
 
         public Vec2 position

@@ -14,6 +14,11 @@ namespace GXPEngine
 		protected int _cols;
 		protected int _frames;
 		protected int _currentFrame;
+
+        private float _sliceLeft = 0;
+        private float _sliceRight = 0;
+        private float _sliceUp = 0;
+        private float _sliceDown = 0;
 		
 		//------------------------------------------------------------------------------------------------------------------------
 		//														AnimSprite()
@@ -134,18 +139,41 @@ namespace GXPEngine
 			_currentFrame = frame;
 			setUVs();
 		}
-				
-		//------------------------------------------------------------------------------------------------------------------------
-		//														setUVs
-		//------------------------------------------------------------------------------------------------------------------------
-		protected override void setUVs() {
+
+        //------------------------------------------------------------------------------------------------------------------------
+        //														setUVs
+        //------------------------------------------------------------------------------------------------------------------------
+        protected void SetHorSlice(float slice)
+        {
+            if (slice > 0)
+            {
+                _sliceRight = -slice;
+                _sliceLeft = slice;
+            }
+            else if (slice < 0)
+            {
+                _sliceRight = slice;
+                _sliceLeft = 0;
+            }
+            else
+            {
+                _sliceLeft = 0;
+                _sliceRight = 0;
+            }
+        }
+        protected void SetVerSlice(float slice)
+        {
+
+        }
+
+        protected override void setUVs() {
 			if (_cols == 0) return;
 
 			int frameX = _currentFrame % _cols;
 			int frameY = _currentFrame / _cols;
 
-			float left = _frameWidth * frameX;
-			float right = left + _frameWidth;
+            float left = _frameWidth * frameX + _frameWidth * _sliceLeft;
+			float right = left + _frameWidth + _frameWidth * _sliceRight;
 
 			//fix1
 			float wp = .5f / _texture.width;

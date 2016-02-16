@@ -46,8 +46,8 @@
     <Compile Include="Level\Item.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\Map.cs" />
-    <Compile Include="Player\Portal.cs" />
-    <Compile Include="Level\Objects\PortalBall.cs" />
+    <Compile Include="Portal\Portal.cs" />
+    <Compile Include="Portal\PortalBall.cs" />
     <Compile Include="Level\Objects\CollisionTile.cs" />
     <Compile Include="Utils\LineSegment.cs" />
     <Compile Include="Menu\LoadLevel.cs" />

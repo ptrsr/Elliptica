@@ -19,6 +19,7 @@ namespace GXPEngine
 
         public override void Step()
         {
+            bool spawned = false;
             int direction;
             GameObject collisionTile;
 
@@ -42,6 +43,7 @@ namespace GXPEngine
                             side = "right";
 
                         SpawnPortal(side, wall);
+                        spawned = true;
                         Destroy();
                         break;
 
@@ -67,7 +69,7 @@ namespace GXPEngine
 
             collisionTile = TMXLevel.Return().CheckCollision(this);
 
-            if (collisionTile != null && collisionTile is CollisionTile)
+            if (spawned == false && collisionTile != null && collisionTile is CollisionTile)
             {
                 CollisionTile wall = (CollisionTile)collisionTile;
                 switch (wall.type)
@@ -107,19 +109,19 @@ namespace GXPEngine
 
             switch(side) {
                 case "up":
-                    portal.SetXY(wall.x + 16, wall.y + 32);
+                    portal.SetXY(wall.x + 16, wall.y + 64);
                     portal.rotation = -90;
                     break;
                 case "down":
-                    portal.SetXY(wall.x + 16, wall.y);
+                    portal.SetXY(wall.x + 16, wall.y - 32);
                     portal.rotation = 90;
                     break;
                 case "left":
-                    portal.SetXY(wall.x + 32, y + 16);
+                    portal.SetXY(wall.x + 64, y + 16);
+                    portal.rotation = 180;
                     break;
                 case "right":
-                    portal.SetXY(wall.x, y + 16);
-                    portal.rotation = 180;
+                    portal.SetXY(wall.x - 32, y + 16);
                     break;
             }
             
