@@ -9,9 +9,12 @@ namespace GXPEngine
     {
         private Player _player;
         private Vec2 _armVector;
-        public Projectile PortalBall;
+        public Projectile portalBall;
         public Ball ball;
         public bool hasBall = false;
+
+        public Portal _purplePortal = null;
+        public Portal _greenPortal = null;
 
         public Arm(Player player) : base("arm.png",2,1)
         {
@@ -42,7 +45,7 @@ namespace GXPEngine
             }
         }
 
-        public void Shoot()
+        public void Shoot(string color)
         {
             if (hasBall == true)
             {
@@ -55,9 +58,12 @@ namespace GXPEngine
 
             } else {
 
-                PortalBall = new PortalBall(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
-                TMXLevel.Return().AddChild(PortalBall);
-                PortalBall.velocity.SetXY(_armVector.Scale(0.8f));
+                if (portalBall == null)
+                {
+                    portalBall = new PortalBall(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y), color, this);
+                    TMXLevel.Return().AddChild(portalBall);
+                    portalBall.velocity.SetXY(_armVector.Scale(0.8f));
+                }
             }
         }
 

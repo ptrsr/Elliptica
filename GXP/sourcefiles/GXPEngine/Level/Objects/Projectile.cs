@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace GXPEngine
 {
-    public abstract class Projectile : Sprite
+    public abstract class Projectile : AnimationSprite
     {
         public int radius;
         public Vec2 _position;
@@ -22,7 +22,7 @@ namespace GXPEngine
 
         AnimSprite anims;
 
-        public Projectile(string filename, Vec2 spawnPos, int radius) : base(filename + ".png")
+        public Projectile(string filename, Vec2 spawnPos, int radius, int cols = 1, int rows = 1) : base(filename + ".png", cols, rows)
         {
             SetXY(spawnPos.x, spawnPos.y);
 
@@ -45,7 +45,7 @@ namespace GXPEngine
             UpdateAnimation();
         }
 
-        protected void UpdateAnimation()
+        private void UpdateAnimation()
         {
             anims.x = position.x;
             anims.y = position.y;

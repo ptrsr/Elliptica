@@ -7,14 +7,20 @@ namespace GXPEngine
 {
     public class PortalBall : Projectile
     {
-        public PortalBall(Vec2 spawnPos) : base("Solidball", spawnPos, 10)
-        {
+        private string _color;
+        private float _frame;
+        Arm _arm;
 
+        public PortalBall(Vec2 spawnPos, string color, Arm arm) : base("Portal Ball " + color, spawnPos, 10, 4)
+        {
+            _arm = arm;
+            _color = color;
         }
 
         void Update()
         {
             Step();
+            UpdateAnimation();
         }
 
         public override void Step()
@@ -92,6 +98,7 @@ namespace GXPEngine
                         break;
 
                     case "black":
+                        _arm.portalBall = null;
                         Destroy();
                         break;
                 }
@@ -104,27 +111,52 @@ namespace GXPEngine
         }
 
         void SpawnPortal(string side, CollisionTile wall) {
-            Portal portal = new Portal(side);
-            TMXLevel.Return().AddChild(portal);
+            _arm.portalBall = null;
+            Portal portal = null;
 
-            switch(side) {
+            switch (side)
+            {
                 case "up":
-                    portal.SetXY(wall.x + 16, wall.y + 64);
-                    portal.rotation = -90;
+                    portal = new Portal(side, _color, wall.x + 16, wall.y + 64);
                     break;
                 case "down":
-                    portal.SetXY(wall.x + 16, wall.y - 32);
-                    portal.rotation = 90;
+                    portal = new Portal(side, _color, wall.x + 16, wall.y - 32);
                     break;
                 case "left":
-                    portal.SetXY(wall.x + 64, y + 16);
-                    portal.rotation = 180;
+                    portal = new Portal(side, _color, wall.x + 64, y + 16);
                     break;
                 case "right":
-                    portal.SetXY(wall.x - 32, y + 16);
+                    portal = new Portal(side, _color, wall.x - 32, y + 16);
                     break;
             }
+
             
+            TMXLevel.Return().AddChild(portal);
+
+            if (_color == "Green")
+            {
+                if (_arm._greenPortal != null)
+                    _arm._greenPortal.Remove();
+
+                _arm._greenPortal = portal;
+            }
+
+            if (_color == "Purple")
+            {
+                if  (_arm._purplePortal != null)
+                    _arm._purplePortal.Remove();
+                _arm._purplePortal = portal;
+            }
+        }
+        void UpdateAnimation()
+        {
+            _frame += 0.4f;
+
+            if (_frame > frameCount)
+            {
+                _frame = 0;
+            }
+            SetFrame((int)_frame);
         }
     }
 }

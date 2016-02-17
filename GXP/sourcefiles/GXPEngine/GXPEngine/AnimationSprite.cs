@@ -163,9 +163,24 @@ namespace GXPEngine
         }
         protected void SetVerSlice(float slice)
         {
-
+            Console.WriteLine(slice);
+            if (slice > 0)
+            {
+                _sliceUp = 0;
+                _sliceDown = -slice;
+            }
+            else if (slice < 0)
+            {
+                _sliceUp = slice;
+                _sliceDown = slice;
+            }
+            else
+            {
+                _sliceUp = 0;
+                _sliceDown = 0;
+            }
         }
-
+        
         protected override void setUVs() {
 			if (_cols == 0) return;
 
@@ -184,8 +199,8 @@ namespace GXPEngine
 			float frameLeft = _mirrorX?right:left;
 			float frameRight = _mirrorX?left:right;
 
-			float top = _frameHeight * frameY;
-			float bottom = top + _frameHeight;
+            float top = _frameHeight * frameY - _frameHeight * _sliceUp;
+            float bottom = top + _frameHeight + _frameHeight * _sliceDown;
 
 			//fix2
 			float hp = .5f / _texture.height;

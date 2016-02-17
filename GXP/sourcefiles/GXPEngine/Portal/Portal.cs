@@ -7,12 +7,50 @@ namespace GXPEngine
 {
     public class Portal : AnimSprite
     {
-        string _side;
-        bool _spawned = false;
-        float _timer = 0;
-        public Portal(string side) : base("Portal Opening.png",8,1)
+        public string _side;
+
+        public Vec2 _topPos;
+        public Vec2 _botPos;
+
+        private float _frame = 0;
+        private string _color;
+        private bool _spawned = false;
+
+        private PortalAnim _anim;
+
+        public Portal(string side, string color, float xPos, float yPos) : base("Portal Opening " + color + ".png",8,1)
         {
             SetOrigin(0, height / 2);
+            x += xPos;
+            y += yPos;
+
+            if (side == "up")
+            {
+                rotation = -90;
+                _topPos = new Vec2(x + height / 2, y);
+                _botPos = new Vec2(x - height / 2, y);
+            }
+            else if (side == "down")
+            {
+                rotation = 90;
+                _topPos = new Vec2(x - height / 2, y);
+                _botPos = new Vec2(x + height / 2, y);
+            }
+            else if (side == "left")
+            {
+                rotation = 180;
+                _topPos = new Vec2(x, y + height / 2);
+                _botPos = new Vec2(x, y - height / 2);
+            }
+            else if (side == "right")
+            {
+                _topPos = new Vec2(x, y + height / 2);
+                _botPos = new Vec2(x, y - height / 2);
+            }
+
+            Console.WriteLine(_topPos + "    " + _botPos);
+
+            _color = color;
             _side = side;
         }
 
@@ -24,30 +62,34 @@ namespace GXPEngine
 
         private void UpdateAnimation()
         {
-            if (_timer < 8)
+            if (_frame < 8)
             {
-                _timer += 0.5f;
+                _frame += 0.5f;
             }
 
-            if (_timer >= 8 && _spawned == false)
+            if (_frame >= 8 && _spawned == false)
             {
-                PortalAnim anim = new PortalAnim();
-                AddChild(anim);
-                anim.SetXY(width / 2 + 16, -height / 2);
+                _anim = new PortalAnim(_color);
+                AddChild(_anim);
+                _anim.SetXY(width / 2 + 16, -height / 2);
                 _spawned = true;
 
             }
 
-            SetFrame((int)_timer);
-            
+            SetFrame((int)_frame);
+        }
 
+        public void Remove()
+        {
+            _anim.Destroy();
+            Destroy();
         }
     }
 
     public class PortalAnim : AnimSprite
     {
         float _timer = 0;
-        public PortalAnim() : base("Portal Idle.png",4,2)
+        public PortalAnim(string color) : base("Portal Idle " + color + ".png",4,2)
         {
 
         }
