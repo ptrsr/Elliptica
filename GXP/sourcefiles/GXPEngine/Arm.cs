@@ -11,6 +11,8 @@ namespace GXPEngine
         private Vec2 _armVector;
         public Projectile PortalBall;
         public Ball ball;
+        Sound throwing;
+        Sound shooting;
         public bool hasBall = false;
 
         public Arm(Player player) : base("arm.png",2,1)
@@ -18,6 +20,8 @@ namespace GXPEngine
             SetOrigin(0, height / 2);
             _player = player;
             SetFrame(0);
+            throwing = new Sound("throw.wav");
+            shooting = new Sound("shoot.wav");
         }
 
         void Update()
@@ -46,6 +50,7 @@ namespace GXPEngine
         {
             if (hasBall == true)
             {
+                throwing.Play();
                 ball = new Ball(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
                 TMXLevel.Return().AddChild(ball);
                 ball.velocity.SetXY(_armVector.Scale(0.8f));
@@ -58,6 +63,7 @@ namespace GXPEngine
                 PortalBall = new PortalBall(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y));
                 TMXLevel.Return().AddChild(PortalBall);
                 PortalBall.velocity.SetXY(_armVector.Scale(0.8f));
+                shooting.Play();
             }
         }
 

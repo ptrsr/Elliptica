@@ -10,9 +10,11 @@ namespace GXPEngine
     {
         public int timer;
         Trigger trigger;
+
+        Sound triggersound;
         public Ball(Vec2 spawnPos) : base("Solidball", spawnPos, 8)
         {
-
+            triggersound = new Sound("trigger activate.wav");
         }
         void Update()
         {
@@ -27,6 +29,7 @@ namespace GXPEngine
             trigger = TMXLevel.Return().CheckTriggerCollisions(this);
             if(trigger != null)
             {
+                triggersound.Play();
                 this.Destroy();
                 trigger.triggerAnim.SetFrame(1);
             }

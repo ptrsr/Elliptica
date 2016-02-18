@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace GXPEngine
 {
-    public abstract class Projectile : Sprite
+    public abstract class Projectile : AnimationSprite
     {
         public int radius;
         public Vec2 _position;
@@ -20,9 +20,7 @@ namespace GXPEngine
 
         public float _gravity = 1;
 
-        AnimSprite anims;
-
-        public Projectile(string filename, Vec2 spawnPos, int radius) : base(filename + ".png")
+        public Projectile(string filename, Vec2 spawnPos, int radius, int cols = 1, int rows = 1) : base(filename + ".png", cols, rows)
         {
             SetXY(spawnPos.x, spawnPos.y);
 
@@ -32,29 +30,11 @@ namespace GXPEngine
 
             SetOrigin(width / 2, width / 2);
 
-            anims = new AnimSprite("GlowingBlue.png", 4, 1);
-            anims.x = x;
-            anims.y = y;
-            AddChild(anims);
-
 
         }
 
         void Update()
         {
-            UpdateAnimation();
-        }
-
-        protected void UpdateAnimation()
-        {
-            anims.x = position.x;
-            anims.y = position.y;
-
-            frame += 0.5f;
-
-            firstframe = 0;
-            lastframe = 3;
-            anims.SetFrame((int)frame);
         }
 
         public virtual void Step()

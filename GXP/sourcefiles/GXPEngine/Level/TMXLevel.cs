@@ -10,15 +10,18 @@ namespace GXPEngine
         //constructor not used because level uses inheritence and only needs the methods
         protected Player player;
         protected Trigger trigger;
+        protected Trigger trigger2;
         protected Ball ball;
         protected Door door;
-        
+        protected BigTimer bigTimer;
+        protected Turret turret;
+
         private static TMXLevel _lvl;
         
         const int TileSize = 32;
 
         protected List<Item> items = new List<Item>();
-        protected List<GameObject> background = new List<GameObject>();
+        public List<GameObject> collisionSprites = new List<GameObject>();
         protected List<int> tiles = new List<int>();
         protected List<Trigger> triggers = new List<Trigger>();
         public TMXLevel()
@@ -126,12 +129,28 @@ namespace GXPEngine
         {
             if (frame < 95)
                AddWall(frame, x, y);
-            
+
+            if (frame > 26 && frame < 38)
+                AddCabel(frame, x, y);
+
             switch (frame)
             {
+                case 97:
+                    trigger2 = new Trigger();
+                    trigger2.SetXY(x, y);
+                    trigger2.x += 25;
+                    trigger2.y += 16;
+                    trigger2.triggerAnim.SetFrame(2);
+                    AddChild(trigger2);
+                    break;
+                case 98:
+                    turret = new Turret(x, y);
+                    turret.SetXY(x, y);
+                    AddChild(turret);
+                    break;
                 case 99:
                     player = new Player();
-                    player.position = new Vec2(x,y);
+                    player.position = new Vec2(x, y);
                     AddChild(player);
                     break;
                 case 100:
@@ -143,6 +162,11 @@ namespace GXPEngine
                     triggers.Add(trigger);
                     AddChild(trigger);
                     break;
+                case 101:
+                    bigTimer = new BigTimer();
+                    bigTimer.x = game.width - 160;
+                    AddChild(bigTimer);
+                    break;
                 case 102:
                     ball = new Ball(new Vec2(x,y));
                     AddChild(ball);
@@ -151,9 +175,10 @@ namespace GXPEngine
                     door = new Door();
                     door.x = x;
                     door.y = y;
-                    background.Add(door);
+                    collisionSprites.Add(door);
                     AddChild(door);
                     break;
+                
 
 
             }
@@ -162,18 +187,23 @@ namespace GXPEngine
         //adding an animation sprite with the right frame from the level
         private void AddWall(int frame, int x, int y)
         {
-            Wall wall = new Wall(frame);
+            CollisionTile wall = new CollisionTile(frame);
             wall.SetXY(x, y);
             AddChild(wall);
-            background.Add(wall);
 
+        }
+        private void AddCabel(int frame, int x, int y)
+        {
+            Cabel cabel = new Cabel(frame);
+            cabel.SetXY(x, y);
+            AddChild(cabel);
         }
 
         public GameObject CheckCollision(GameObject other) {
             GameObject tiledObject;
-            for (int i = 0; i < background.Count; i++)
+            for (int i = 0; i < collisionSprites.Count; i++)
             {
-                tiledObject = background[i];
+                tiledObject = collisionSprites[i];
                 if (other.HitTest(tiledObject))
                     return tiledObject;
             }
@@ -193,6 +223,35 @@ namespace GXPEngine
                 
             }
             return null;
+        }
+
+        public List<GameObject> GetBackGroundList()
+        {
+            return collisionSprites;
+        }
+
+        public Player GetPlayer()
+        {
+            return player;
+        }
+        public Turret GetTurret()
+        {
+            return turret;
+        }
+
+        public Trigger GetTrigger()
+        {
+            return trigger;
+        }
+
+        public Trigger GetRedTrigger()
+        {
+            return trigger2;
+        }
+
+        public Ball GetBall()
+        {
+            return ball;
         }
 
         public static TMXLevel Return()

@@ -38,20 +38,27 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arm.cs" />
-    <Compile Include="ButtonComponent.cs" />
-    <Compile Include="Door.cs" />
-    <Compile Include="GameOver.cs" />
+    <Compile Include="HUD\Cursor.cs" />
+    <Compile Include="Level\Objects\CollisionTIle.cs" />
+    <Compile Include="Player\Arm.cs" />
+    <Compile Include="HUD\BigTimer.cs" />
+    <Compile Include="HUD\ButtonComponent.cs" />
+    <Compile Include="HUD\Buttons.cs" />
+    <Compile Include="HUD\Cabel.cs" />
+    <Compile Include="HUD\Cake.cs" />
+    <Compile Include="Menus\EndScreen.cs" />
+    <Compile Include="Level\Objects\Door.cs" />
+    <Compile Include="Menus\GameOver.cs" />
     <Compile Include="Level\Objects\Ball.cs" />
     <Compile Include="Level\Item.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\Map.cs" />
-    <Compile Include="Level\Objects\Portal.cs" />
-    <Compile Include="Level\Objects\PortalBall.cs" />
+    <Compile Include="Portal\Portal.cs" />
+    <Compile Include="Portal\PortalBall.cs" />
     <Compile Include="Level\Objects\Wall.cs" />
-    <Compile Include="LineSegment.cs" />
-    <Compile Include="LoadLevel.cs" />
-    <Compile Include="Menu.cs" />
+    <Compile Include="Utils\LineSegment.cs" />
+    <Compile Include="Menus\LoadLevel.cs" />
+    <Compile Include="Menus\Menu.cs" />
     <Compile Include="MyGame.cs" />
     <Compile Include="GXPEngine\Canvas.cs" />
     <Compile Include="GXPEngine\Game.cs" />
@@ -81,12 +88,12 @@
     <Compile Include="GXPEngine\Utils\Utils.cs" />
     <Compile Include="Level\TMXParser.cs" />
     <Compile Include="Level\TMXLevel.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Player\Player.cs" />
     <Compile Include="Level\Objects\Projectile.cs" />
-    <Compile Include="RoundedRectangle.cs" />
-    <Compile Include="Trigger.cs" />
-    <Compile Include="Turret.cs" />
-    <Compile Include="Vec2.cs" />
+    <Compile Include="Utils\RoundedRectangle.cs" />
+    <Compile Include="Level\Objects\Trigger.cs" />
+    <Compile Include="Level\Objects\Turret.cs" />
+    <Compile Include="Utils\Vec2.cs" />
   </ItemGroup>
   <ItemGroup />
 </Project>

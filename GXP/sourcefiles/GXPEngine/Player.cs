@@ -18,11 +18,14 @@ namespace GXPEngine
         private float _gravity = 1;
 
         private bool onGround = false;
+        public bool dead = false;
         private float frame = 0.0f;
         private float firstframe = 0.0f;
         private float lastframe = 0.0f;
 
         protected string state = null;
+
+        private bool isLevelCompleted = false;
 
         public Arm arm;
 
@@ -55,7 +58,7 @@ namespace GXPEngine
         {
             if (Input.GetKey(Key.W) && onGround)
             {
-                acceleration.Add(new Vec2(0, -30));
+                acceleration.Add(new Vec2(0, -40));
             }
 
             if (Input.GetKey(Key.D))
@@ -94,7 +97,14 @@ namespace GXPEngine
             tiledObject = TMXLevel.Return().CheckCollision(this);
 
             if (tiledObject != null)
-            {
+            {   if (tiledObject is Door)
+                {
+                    Door door = (Door)tiledObject;
+                    if (door.IsDoorOpen())
+                    {
+                        isLevelCompleted = true;
+                    }
+                }
                 direction = velocity.x > 0 ? -1 : 1;
 
                 position.x = tiledObject.x + 16 + direction * (width / 2 + 17);
@@ -146,6 +156,15 @@ namespace GXPEngine
             }
         }
 
+
+        public void Die()
+        {
+            dead = true;
+
+            if (dead == true)
+                Destroy();
+        }
+
         void UpdateAnimation()
         {
             if (velocity.y == 0)
@@ -182,6 +201,11 @@ namespace GXPEngine
 
 
             SetFrame((int)frame);
+        }
+
+        public bool CheckState()
+        {
+            return isLevelCompleted;
         }
 
         public Vec2 position

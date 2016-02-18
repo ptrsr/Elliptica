@@ -8,48 +8,51 @@ namespace GXPEngine
     class Menu : GameObject
     {
         MyGame _game;
-        ButtonComponent startGame;
-        ButtonComponent loadLevel;
-        ButtonComponent exitGame;
+        public Buttons startGame;
+        public Buttons loadLevel;
+        public Buttons exitGame;
 
         public Menu(MyGame myGame)
         {
             _game = myGame;
             game.Add(this);
 
-            Level level = new Level("level1.tmx");
+            Sprite background = new Sprite("background.png");
+            AddChild(background);
+
+            Level level = new Level("Start.tmx", _game);
             AddChild(level);
 
-            startGame = new ButtonComponent(200, 40, System.Drawing.Color.DarkBlue, "Start Game");
+            startGame = new Buttons("buttons_menu.png", 0,2,3);
             AddChild(startGame);
             startGame.OnClick += HandleOnClick;
-            startGame.x = game.width / 2.5f;
+            startGame.x = game.width / 2;
             startGame.y = 300;
 
-            loadLevel = new ButtonComponent(200, 40, System.Drawing.Color.DarkBlue, "Load Level");
+            loadLevel = new Buttons("buttons_menu.png", 2,2, 3);
             AddChild(loadLevel);
             loadLevel.OnClick += HandleOnClick;
-            loadLevel.x = game.width / 2.5f;
-            loadLevel.y = 400;
+            loadLevel.x = game.width / 2;
+            loadLevel.y = 429;
 
-            exitGame = new ButtonComponent(200, 40, System.Drawing.Color.DarkBlue, "Exit Game");
+            exitGame = new Buttons("buttons_menu.png", 4, 2, 3);
             AddChild(exitGame);
             exitGame.OnClick += HandleOnClick;
-            exitGame.x = game.width / 2.5f;
-            exitGame.y = 500;
+            exitGame.x = game.width / 2;
+            exitGame.y = 558;
         }
 
-        void HandleOnClick (ButtonComponent button)
+        void HandleOnClick(Buttons button)
         {
             if (button == startGame)
             {
-                _game.SetState("level1");
+                _game.stateType = StateType.First_Level;
             }
-            if(button == loadLevel)
+            if (button == loadLevel)
             {
-                _game.SetState("loadLevel");
+                _game.stateType = StateType.Level_Select;
             }
-            if ( button == exitGame)
+            if (button == exitGame)
             {
                 Environment.Exit(0);
             }

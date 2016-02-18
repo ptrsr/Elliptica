@@ -14,29 +14,35 @@ namespace GXPEngine
 		protected int _cols;
 		protected int _frames;
 		protected int _currentFrame;
-		
-		//------------------------------------------------------------------------------------------------------------------------
-		//														AnimSprite()
-		//------------------------------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// Initializes a new instance of the <see cref="GXPEngine.AnimSprite"/> class.
-		/// </summary>
-		/// <param name='filename'>
-		/// The name of the file to be loaded. Files are cached internally.
-		/// Texture sizes should be a power of two: 1, 2, 4, 8, 16, 32, 64 etc.
-		/// The width and height don't need to be the same.
-		/// If you want to load transparent sprites, use .PNG with transparency.
-		/// </param>
-		/// <param name='cols'>
-		/// Number of columns in the animation.
-		/// </param>
-		/// <param name='rows'>
-		/// Number of rows in the animation.
-		/// </param>
-		/// <param name='frames'>
-		/// Optionally, indicate a number of frames. When left blank, defaults to width*height.
-		/// </param>
-		public AnimationSprite (string filename, int cols, int rows, int frames=-1) : base(filename)
+
+
+        private float _sliceLeft = 0;
+        private float _sliceRight = 0;
+        private float _sliceUp = 0;
+        private float _sliceDown = 0;
+
+        //------------------------------------------------------------------------------------------------------------------------
+        //														AnimSprite()
+        //------------------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GXPEngine.AnimSprite"/> class.
+        /// </summary>
+        /// <param name='filename'>
+        /// The name of the file to be loaded. Files are cached internally.
+        /// Texture sizes should be a power of two: 1, 2, 4, 8, 16, 32, 64 etc.
+        /// The width and height don't need to be the same.
+        /// If you want to load transparent sprites, use .PNG with transparency.
+        /// </param>
+        /// <param name='cols'>
+        /// Number of columns in the animation.
+        /// </param>
+        /// <param name='rows'>
+        /// Number of rows in the animation.
+        /// </param>
+        /// <param name='frames'>
+        /// Optionally, indicate a number of frames. When left blank, defaults to width*height.
+        /// </param>
+        public AnimationSprite (string filename, int cols, int rows, int frames=-1) : base(filename)
 		{
 			name = filename;
 			initializeAnimFrames(cols, rows, frames);
@@ -134,11 +140,48 @@ namespace GXPEngine
 			_currentFrame = frame;
 			setUVs();
 		}
-				
-		//------------------------------------------------------------------------------------------------------------------------
-		//														setUVs
-		//------------------------------------------------------------------------------------------------------------------------
-		protected override void setUVs() {
+
+        //------------------------------------------------------------------------------------------------------------------------
+        //														setUVs
+        //------------------------------------------------------------------------------------------------------------------------
+        protected void SetHorSlice(float slice)
+        {
+            if (slice > 0)
+            {
+                _sliceRight = -slice;
+                _sliceLeft = slice;
+            }
+            else if (slice < 0)
+            {
+                _sliceRight = slice;
+                _sliceLeft = 0;
+            }
+            else
+            {
+                _sliceLeft = 0;
+                _sliceRight = 0;
+            }
+        }
+        protected void SetVerSlice(float slice)
+        {
+            if (slice > 0)
+            {
+                _sliceUp = 0;
+                _sliceDown = -slice;
+            }
+            else if (slice < 0)
+            {
+                _sliceUp = slice;
+                _sliceDown = slice;
+            }
+            else
+            {
+                _sliceUp = 0;
+                _sliceDown = 0;
+            }
+        }
+
+        protected override void setUVs() {
 			if (_cols == 0) return;
 
 			int frameX = _currentFrame % _cols;
