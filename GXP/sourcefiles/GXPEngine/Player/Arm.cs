@@ -16,6 +16,13 @@ namespace GXPEngine
         Sound throwing;
         Sound shooting;
         public bool hasBall = false;
+        private bool reset;
+
+        string _colour;
+
+        private Charge charge = new Charge();
+
+        public float _timer = 0;
 
         public Portal _purplePortal = null;
         public Portal _greenPortal = null;
@@ -25,37 +32,24 @@ namespace GXPEngine
             SetOrigin(0, height / 2);
             _player = player;
             SetFrame(0);
+
             throwing = new Sound("throw.wav");
             shooting = new Sound("shoot.wav");
+
+            AddChild(charge);
+            charge.SetXY(40, -18);
         }
 
         void Update()
         {
-            _armVector = new Vec2(Input.mouseX - (_player.x + x), Input.mouseY - (_player.y + y)).Normalize().Multiply(this.height * 1.5f);
+            Charge();
+
+            _armVector = new Vec2(Input.mouseX - (_player.x + x), Input.mouseY - (_player.y + y)).Normalize().Multiply(this.height * 1f);
             RotateArm();
             CheckBall();
             if (shot)
             {
                 UpdateAnimation();
-            }
-            if(Input.GetKeyDown(Key.R))
-            {
-                if (_greenPortal != null)
-                {
-                    _greenPortal.Destroy();
-                    _greenPortal = null;
-                }
-
-                if (_purplePortal != null)
-                {
-                    _purplePortal.Destroy();
-                    _purplePortal = null;
-                }
-            }
-
-            if (_greenPortal == null && _purplePortal == null)
-            {
-                Cursor.SetCursorFrame(0);
             }
         }
 
@@ -74,7 +68,47 @@ namespace GXPEngine
             }
         }
 
-        public void Shoot(string color)
+        public void Charge()
+        {
+            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+                reset = true;
+
+            charge.alpha = 0;
+            if (reset == true && (Input.GetMouseButton(0) || Input.GetMouseButton(1)))
+            {
+                if (Input.GetMouseButton(0))
+                    _colour = "Purple";
+                else
+                    _colour = "Green";
+
+                charge.alpha = 1;
+                _timer += 0.2f;
+
+                charge.SetFrame((int)_timer);
+            }
+
+
+            if (Input.GetMouseButtonUp(0) && _timer > 0)
+            {
+                Shoot("Purple", _timer);
+                _timer = 0;
+            }
+            else if (Input.GetMouseButtonUp(1) && _timer > 0)
+            {
+                Shoot("Green", _timer);
+                _timer = 0;
+            }
+            else if (_timer > 8)
+            {
+                Shoot(_colour, _timer);
+                _timer = 0;
+                reset = false;
+            }
+
+
+        }
+
+        public void Shoot(string color, float strength)
         {
             if (hasBall == true)
             {
@@ -92,19 +126,15 @@ namespace GXPEngine
                 {
                     portalBall = new PortalBall(new Vec2(_player.x + _armVector.x + x, _player.y + _armVector.y + y), color, this);
                     TMXLevel.Return().AddChild(portalBall);
-                    portalBall.velocity.SetXY(_armVector.Scale(0.8f));
-                    shot = true;
+                    portalBall.velocity.SetXY(_armVector.Scale(strength).Scale(0.2f));
                 }
             }
         }
         void UpdateAnimation()
         {
-            _frame = _frame + 0.3f;
+            _frame = _frame + 0.5f;
             if (_frame >= frameCount - 1)
-            {
                 _frame = 0;
-                shot = false;
-            }
             SetFrame((int)_frame);
         }
 

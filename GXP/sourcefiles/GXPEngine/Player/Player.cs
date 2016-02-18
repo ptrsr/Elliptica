@@ -56,6 +56,7 @@ namespace GXPEngine
 
         void Update()
         {
+            CheckPortal();
             Movements();
             UpdateAnimation();
             Step();
@@ -72,18 +73,6 @@ namespace GXPEngine
             {
                 acceleration.Add(new Vec2(0.8f, 0));
             }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                arm.Shoot("Purple");
-            }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                arm.Shoot("Green");
-            }
-
-
 
             else if (Input.GetKey(Key.A))
             {
@@ -104,72 +93,70 @@ namespace GXPEngine
         {
             int direction;
             GameObject tiledObject;
-            if (CheckDistance())
+            // X Collision
+            velocity.x += acceleration.x;
+            position.x += velocity.x;
+            x = position.x;
+
+            tiledObject = TMXLevel.Return().CheckCollision(this);
+
+            if (tiledObject != null)
             {
-                // X Collision
-                velocity.x += acceleration.x;
-                position.x += velocity.x;
-                x = position.x;
-
-                tiledObject = TMXLevel.Return().CheckCollision(this);
-
-                if (tiledObject != null)
+                if (tiledObject is Door)
                 {
-                    if (tiledObject is Door)
+                    Door door = (Door)tiledObject;
+                    if (door.IsDoorOpen())
                     {
-                        Door door = (Door)tiledObject;
-                        if (door.IsDoorOpen())
-                        {
-                            isLevelCompleted = true;
-                        }
+                        isLevelCompleted = true;
                     }
-                    direction = velocity.x > 0 ? -1 : 1;
-
-                    position.x = tiledObject.x + 16 + direction * (width / 2 + 17);
-                    velocity.x = 0;
                 }
-                x = position.x;
+                direction = velocity.x > 0 ? -1 : 1;
 
-                // Y Collision
-                acceleration.y += _gravity;
-                velocity.y += acceleration.y;
-                position.y += velocity.y;
-                y = position.y;
+                position.x = tiledObject.x + 16 + direction * (width / 2 + 17);
+                velocity.x = 0;
+            }
+            x = position.x;
 
-                tiledObject = TMXLevel.Return().CheckCollision(this);
+            // Y Collision
+            acceleration.y += _gravity;
+            velocity.y = Utils.Clamp(velocity.y + acceleration.y,-30,30);
+            position.y += velocity.y;
+            y = position.y;
 
-                if (tiledObject != null)
+            tiledObject = TMXLevel.Return().CheckCollision(this);
+
+            if (tiledObject != null)
+            {
+                direction = velocity.y < 0 ? -1 : 1;
+
+                if (direction == 1)
                 {
-                    direction = velocity.y < 0 ? -1 : 1;
-
-                    if (direction == 1)
-                    {
-                        position.y = tiledObject.y;
-                        onGround = true;
-                    }
-
-                    if (direction == -1)
-                        position.y = tiledObject.y + height + 32;
-
-                    velocity.y = 0;
+                    position.y = tiledObject.y;
+                    onGround = true;
                 }
-                y = position.y;
-                if (position.y > game.height || position.y < 0 || position.x < 0 || position.x > game.width)
-                    Die();
+
+                if (direction == -1)
+                    position.y = tiledObject.y + height + 32;
+
+                velocity.y = 0;
+            }
+            y = position.y;
+            if (position.y > game.height || position.y < 0 || position.x < 0 || position.x > game.width)
+                Die();
+        
+            // Friction
+            acceleration = Vec2.zero;
+
+            if (onGround)
+            {
+                velocity.x *= 0.90f;
+                velocity.y *= 0.99f;
             }
             else
             {
-
-                CheckInPortal();
-                position.Add(velocity);
-                x = position.x;
-                y = position.y;
-
+                velocity.x *= 0.95f;
+                velocity.y *= 0.995f;
             }
-            // Friction
-            acceleration = Vec2.zero;
-            velocity.x *= 0.90f;
-            velocity.y *= 0.99f;
         }
 
         public void OnCollision(GameObject other)
@@ -258,7 +245,7 @@ namespace GXPEngine
             SetOrigin(width / 2, height);
         }
 
-        private bool CheckDistance()
+        private void CheckPortal()
         {
             Portal green = arm._greenPortal;
             Portal purple = arm._purplePortal;
@@ -275,35 +262,26 @@ namespace GXPEngine
                     portalOut = purple;
                 }
 
-                distance = DistanceTo(portalIn);
+                distance = position.Clone().Substract(new Vec2(0, height / 2)).Substract(portalIn._Pos).Lenght();
+                Console.WriteLine(distance);
 
-                if (distance < 64)
+                if (distance < 45)
                 {
-                    Vec2 playerPos = position.Clone();
-                    if (portalIn._side == "up") { playerPos.Substract(new Vec2(0, height / 4 + 40)); }
-                    if (portalIn._side == "down") { playerPos.Substract(new Vec2(0, height / 4)); }
+                    Vec2 playerPos = position;
+                    string side = portalIn._side;
+                    if (side == "up")
+                        playerPos.Substract(new Vec2(0, height - 60));
 
-
-                    Vec2 Dif = playerPos.Substract(portalIn._botPos.Clone());
+                    Vec2 Dif = playerPos.Clone().Substract(portalIn._botPos.Clone());
                     Vec2 lineNormal = portalIn._botPos.Clone().Substract(portalIn._topPos.Clone()).Normal();
                     distance = -Dif.Dot(lineNormal);
-                    return false;
+
+                    if (distance < 5 && HitTest(portalIn)) 
+                        Teleport(portalIn, portalOut);
                 }
             }
-            return true;
         }
-        public void CheckInPortal()
-        {
-            if (distance < 0)
-            {
-                Teleport(portalIn, portalOut);
 
-                x = position.x;
-                y = position.y;
-
-                CheckDistance();
-            }
-        }
         private void Teleport(Portal In, Portal Out)
         {
             string sideIn = In._side;
@@ -327,14 +305,14 @@ namespace GXPEngine
                 }
                 else if (sideOut == left)
                 {
-                    position = Out._botPos.Clone().Add(new Vec2(width / 2, 0));
-                    velocity.x = velocity.y;
+                    position = Out._topPos.Clone().Add(new Vec2(width / 2, 0));
+                    velocity.x = -velocity.y;
                     velocity.y = 0;
                 }
                 else if (sideOut == right)
                 {
-                    position = Out._botPos.Clone().Substract(new Vec2(width / 2, 0));
-                    velocity.x = -velocity.y;
+                    position = Out._topPos.Clone().Substract(new Vec2(width / 2, 0));
+                    velocity.x = velocity.y;
                     velocity.y = 0;
                 }
             }
@@ -342,7 +320,7 @@ namespace GXPEngine
             {
                 if (sideOut == up)
                 {
-                    position = Out._Pos.Clone().Add(new Vec2(0, height / 2 + 30));
+                    position = Out._Pos.Clone().Add(new Vec2(0, height / 2 + 40));
                 }
                 else if (sideOut == down)
                 {
@@ -407,7 +385,7 @@ namespace GXPEngine
                 else if (sideOut == right)
                 {
                     position = Out._topPos.Clone().Substract(new Vec2(width / 2, 0));
-                    velocity.y = -velocity.y;
+                    velocity.x = -velocity.x;
                 }
             }
 
