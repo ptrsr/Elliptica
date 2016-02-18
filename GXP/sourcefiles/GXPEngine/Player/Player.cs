@@ -13,21 +13,20 @@ namespace GXPEngine
         public Vec2 _velocity;
         public Vec2 _acceleration;
 
+
+        public Arm arm;
+
+        private Portal portalIn = null;
+        private Portal portalOut = null;
+
         private float _gravity = 1;
 
-
-        private bool _inPortal = false;
         private float _horSlice = 0;
         private float _verSlice = 0;
 
         private bool onGround = false;
-        private float frame = 0.0f;
-        private float firstframe = 0.0f;
-        private float lastframe = 0.0f;
 
-        protected string state = null;
-
-        public Arm arm;
+        private float frame = 0;
 
         public Player() : base("player.png", 16 , 2)
         {
@@ -95,9 +94,9 @@ namespace GXPEngine
         {
             int direction;
             GameObject tiledObject;
-            float distance = CheckInPortal();
 
-            if (distance > 64) {
+            if (CheckInPortal() == false) 
+            {
 
             // X Collision
             velocity.x += acceleration.x;
@@ -141,17 +140,6 @@ namespace GXPEngine
                 }
                 y = position.y;
             }
-            else
-            {
-
-                velocity.Add(acceleration);
-                position.Add(velocity);
-                x = position.x;
-                y = position.y;
-                Console.WriteLine(true);
-
-
-            }
 
             // Friction
             acceleration = Vec2.zero;
@@ -174,6 +162,9 @@ namespace GXPEngine
 
         void UpdateAnimation()
         {
+            float firstframe = 0.0f;
+            float lastframe = 0.0f;
+
             if (velocity.y == 0)
             {
                 if (Mathf.Abs(velocity.x) > 1.5f)
@@ -210,27 +201,12 @@ namespace GXPEngine
             SetFrame((int)frame);
         }
 
-        public void HorSlice(float slice)
-        {
-            _horSlice = slice;
-            SetHorSlice(slice);
-            setUVs();
-            SetOrigin(width / 2, height);
-        }
-        public void VerSLice(float slice)
-        {
-            _verSlice = slice;
-            SetVerSlice(slice);
-            setUVs();
-            SetOrigin(width / 2, height);
-        }
-
-        public float CheckInPortal()
+        public bool CheckInPortal()
         {
             Portal green = arm._greenPortal;
             Portal purple = arm._purplePortal;
-            Portal portalIn = null;
-            Portal portalOut = null;
+            portalIn = null;
+            portalOut = null;
 
             float distance = 1000;
 
@@ -241,7 +217,8 @@ namespace GXPEngine
                     portalIn = purple;
                     portalOut = green;
                 }
-                else {
+                else
+                {
                     portalIn = green;
                     portalOut = purple;
                 }
@@ -249,11 +226,17 @@ namespace GXPEngine
                 distance = DistanceTo(portalIn);
             }
             else
+            {
                 portalIn = null;
+                portalOut = null;
 
-            if (distance != -1 && distance < 64)
+                return false;
+            }
+
+            if (distance < 64)
             {
                 Vec2 playerPos = position.Clone();
+
                 if (portalIn._side == "up") { playerPos.Substract(new Vec2(0, height / 4 + 40)); }
                 if (portalIn._side == "down") { playerPos.Substract(new Vec2(0, height / 4)); }
 
@@ -262,71 +245,138 @@ namespace GXPEngine
                 Vec2 lineNormal = portalIn._botPos.Clone().Substract(portalIn._topPos.Clone()).Normal();
                 distance = -Dif.Dot(lineNormal);
 
+                velocity.Add(acceleration);
+                position.Add(velocity);
+
+                if (portalIn._side == "up" || portalIn._side == "down")
+                {
+                    position.y += _gravity;
+                    x = Utils.Clamp(position.x, portalIn._topPos.x, portalIn._botPos.x);
+                    y = position.y;
+
+                }
+                else
+                {
+                    x = position.x;
+                    y = Utils.Clamp(position.y, portalIn._botPos.y, portalIn._topPos.y);
+                }
+
 
                 if (distance < 0)
                 {
-                    position = new Vec2(portalOut.x,portalOut.y).Add(new Vec2(0,80));
+                    Teleport(portalIn, portalOut);
                 }
+                return true;
             }
-            return distance;
+            return false;
         }
 
-        private void Teleport(string inSide, string outSide)
+        void Teleport(Portal In, Portal Out)
         {
+            string sideIn = In._side;
+            string sideOut = Out._side;
+
             string up = "up";
             string down = "down";
             string left = "left";
             string right = "right";
 
-            if (inSide == down)
+            if (sideIn == up)
             {
-                if (outSide == down)
+                if (sideOut == up)
+                {
+                    position = Out._Pos.Add( new Vec2(0,height/2));
                     velocity.y -= velocity.y;
-                if (outSide == left)
+                }
+                else if (sideOut == down)
                 {
+                    position = Out._Pos.Substract(new Vec2(0,height/2));
+                }
+                else if (sideOut == left)
+                {
+                    position = Out._botPos;
                     velocity.x = velocity.y;
                     velocity.y = 0;
                 }
-                if (outSide == right)
+                else if (sideOut == right)
                 {
+                    position = Out._botPos;
                     velocity.x = -velocity.y;
                     velocity.y = 0;
                 }
             }
-            if (inSide == up)
+            else if (sideIn == down)
             {
-                if (outSide == down)
+                if (sideOut == up)
+                {
+                    position = Out._Pos.Add(new Vec2(0, height / 2));
+                }
+                else if (sideOut == down)
+                {
+                    position = Out._Pos.Substract(new Vec2(0, height / 2));
                     velocity.y -= velocity.y;
-                if (outSide == left)
+                }
+                else if (sideOut == left)
                 {
+                    position = Out._botPos;
                     velocity.x = -velocity.y;
                     velocity.y = 0;
                 }
-                if (outSide == right)
+                else if (sideOut == right)
                 {
+                    position = Out._botPos;
                     velocity.x = velocity.y;
                     velocity.y = 0;
                 }
             }
-
-            if (inSide == left)
+            else if (sideIn == left)
             {
-                if (outSide == up)
-                    velocity.y -= -velocity.x;
-                
-                if (outSide == left)
+                if (sideOut == up)
                 {
-                    velocity.x = -velocity.y;
-                    velocity.y = 0;
+                    position = Out._Pos.Add(new Vec2(0, height / 2));
+                    velocity.y = -velocity.x;
+                    velocity.x = 0;
                 }
-                if (outSide == right)
+                else if (sideOut == down)
                 {
-                    velocity.x = velocity.y;
-                    velocity.y = 0;
+                    position = Out._Pos.Substract(new Vec2(0, height / 2));
+                    velocity.y = velocity.x;
+                    velocity.x = 0;
+                }
+                else if (sideOut == left)
+                {
+                    position = Out._botPos;
+                    velocity.x = -velocity.x;
+                }
+                else if (sideOut == right)
+                {
+                    position = Out._botPos;
                 }
             }
-
-
+            else if (sideIn == right)
+            {
+                if (sideOut == up)
+                {
+                    position = Out._Pos.Add(new Vec2(0, height / 2));
+                    velocity.y = velocity.x;
+                    velocity.x = 0;
+                }
+                else if (sideOut == down)
+                {
+                    position = Out._Pos.Substract(new Vec2(0, height / 2));
+                    velocity.y = -velocity.x;
+                    velocity.x = 0;
+                }
+                else if (sideOut == left)
+                {
+                    position = Out._botPos;
+                    velocity.x = -velocity.x;
+                }
+                else if (sideOut == right)
+                {
+                    position = Out._botPos;
+                }
+            }
         }
 
         public Vec2 position

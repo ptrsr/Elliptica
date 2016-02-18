@@ -143,43 +143,6 @@ namespace GXPEngine
         //------------------------------------------------------------------------------------------------------------------------
         //														setUVs
         //------------------------------------------------------------------------------------------------------------------------
-        protected void SetHorSlice(float slice)
-        {
-            if (slice > 0)
-            {
-                _sliceRight = -slice;
-                _sliceLeft = slice;
-            }
-            else if (slice < 0)
-            {
-                _sliceRight = slice;
-                _sliceLeft = 0;
-            }
-            else
-            {
-                _sliceLeft = 0;
-                _sliceRight = 0;
-            }
-        }
-        protected void SetVerSlice(float slice)
-        {
-            Console.WriteLine(slice);
-            if (slice > 0)
-            {
-                _sliceUp = 0;
-                _sliceDown = -slice;
-            }
-            else if (slice < 0)
-            {
-                _sliceUp = slice;
-                _sliceDown = slice;
-            }
-            else
-            {
-                _sliceUp = 0;
-                _sliceDown = 0;
-            }
-        }
         
         protected override void setUVs() {
 			if (_cols == 0) return;
@@ -187,8 +150,8 @@ namespace GXPEngine
 			int frameX = _currentFrame % _cols;
 			int frameY = _currentFrame / _cols;
 
-            float left = _frameWidth * frameX + _frameWidth * _sliceLeft;
-			float right = left + _frameWidth + _frameWidth * _sliceRight;
+            float left = _frameWidth * frameX;
+			float right = left + _frameWidth;
 
 			//fix1
 			float wp = .5f / _texture.width;
@@ -199,8 +162,8 @@ namespace GXPEngine
 			float frameLeft = _mirrorX?right:left;
 			float frameRight = _mirrorX?left:right;
 
-            float top = _frameHeight * frameY - _frameHeight * _sliceUp;
-            float bottom = top + _frameHeight + _frameHeight * _sliceDown;
+            float top = _frameHeight * frameY;
+            float bottom = top + _frameHeight;
 
 			//fix2
 			float hp = .5f / _texture.height;

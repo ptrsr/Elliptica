@@ -11,6 +11,7 @@ namespace GXPEngine
 
         public Vec2 _topPos;
         public Vec2 _botPos;
+        public Vec2 _Pos;
 
         private float _frame = 0;
         private string _color;
@@ -27,6 +28,7 @@ namespace GXPEngine
             if (side == "up")
             {
                 rotation = -90;
+                _Pos = new Vec2(x, y);
                 _topPos = new Vec2(x + height / 2, y);
                 _botPos = new Vec2(x - height / 2, y);
             }
@@ -47,8 +49,6 @@ namespace GXPEngine
                 _topPos = new Vec2(x, y + height / 2);
                 _botPos = new Vec2(x, y - height / 2);
             }
-
-            Console.WriteLine(_topPos + "    " + _botPos);
 
             _color = color;
             _side = side;
