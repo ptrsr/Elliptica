@@ -24,11 +24,11 @@ namespace GXPEngine
             SetOrigin(0, height / 2);
             x += xPos;
             y += yPos;
+            _Pos = new Vec2(x, y);
 
             if (side == "up")
             {
                 rotation = -90;
-                _Pos = new Vec2(x, y);
                 _topPos = new Vec2(x + height / 2, y);
                 _botPos = new Vec2(x - height / 2, y);
             }

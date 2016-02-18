@@ -233,12 +233,12 @@ namespace GXPEngine
                 return false;
             }
 
-            if (distance < 64)
+            if (distance < 90)
             {
                 Vec2 playerPos = position.Clone();
 
                 if (portalIn._side == "up") { playerPos.Substract(new Vec2(0, height / 4 + 40)); }
-                if (portalIn._side == "down") { playerPos.Substract(new Vec2(0, height / 4)); }
+                else if (portalIn._side == "down") { playerPos.Substract(new Vec2(0, height / 4)); }
 
 
                 Vec2 Dif = playerPos.Substract(portalIn._botPos.Clone());
@@ -265,6 +265,10 @@ namespace GXPEngine
                 if (distance < 0)
                 {
                     Teleport(portalIn, portalOut);
+
+                    x = position.x + velocity.x;
+                    y = position.y + velocity.y;
+                
                 }
                 return true;
             }
@@ -314,7 +318,7 @@ namespace GXPEngine
                 else if (sideOut == down)
                 {
                     position = Out._Pos.Substract(new Vec2(0, height / 2));
-                    velocity.y -= velocity.y;
+                    velocity.y = -velocity.y;
                 }
                 else if (sideOut == left)
                 {
